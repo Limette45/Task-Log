@@ -56,7 +56,10 @@ function loadData() {
 }
 
 function saveData() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(data)
+    );
 }
 
 function getTodayDateObject() {
@@ -68,9 +71,11 @@ function getTodayDateObject() {
 }
 
 function dateToObject(dateString) {
-    const [year, month, day] = dateString.split("-").map(Number);
+    const [year, month, day] =
+        dateString.split("-").map(Number);
 
-    const date = new Date(year, month - 1, day);
+    const date =
+        new Date(year, month - 1, day);
 
     date.setHours(0, 0, 0, 0);
 
@@ -92,7 +97,9 @@ function isToday() {
 }
 
 function getRecord(date) {
+
     if (!data.records[date]) {
+
         data.records[date] = {
             vocab: {},
             lang: {},
@@ -116,23 +123,80 @@ function getRecord(date) {
 }
 
 function formatDate(dateString) {
-    const date = dateToObject(dateString);
 
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
+    const date =
+        dateToObject(dateString);
+
+    const year =
+        date.getFullYear();
+
+    const month =
+        String(date.getMonth() + 1)
+            .padStart(2, "0");
+
+    const day =
+        String(date.getDate())
+            .padStart(2, "0");
 
     return `${year}-${month}-${day}`;
 }
 
+
+/* =========================================
+   HISTORY DATE RANGE
+   Current date ± 5 days
+========================================= */
+
+function getHistoryDates() {
+
+    const dates = [];
+
+    const centerDate =
+        dateToObject(currentDate);
+
+    for (let i = -5; i <= 5; i++) {
+
+        const date =
+            new Date(centerDate);
+
+        date.setDate(
+            date.getDate() + i
+        );
+
+        dates.push(
+            dateToString(date)
+        );
+    }
+
+    /*
+     * Newest date first
+     */
+    dates.sort(function (a, b) {
+        return b.localeCompare(a);
+    });
+
+    return dates;
+}
+
+
+/* =========================================
+   MAIN RENDER
+========================================= */
+
 function render() {
-    document.getElementById("dateDisplay").textContent =
+
+    document.getElementById(
+        "dateDisplay"
+    ).textContent =
         formatDate(currentDate);
 
-    const record = getRecord(currentDate);
+    const record =
+        getRecord(currentDate);
 
     renderFixedChecks(
-        document.querySelectorAll(".fixed-check"),
+        document.querySelectorAll(
+            ".fixed-check"
+        ),
         record
     );
 
@@ -143,216 +207,444 @@ function render() {
     saveData();
 }
 
-function renderFixedChecks(elements, record) {
-    elements.forEach(input => {
-        const category = input.dataset.category;
-        const item = input.dataset.item;
+function renderFixedChecks(
+    elements,
+    record
+) {
 
-        input.checked = Boolean(record[category][item]);
+    elements.forEach(input => {
+
+        const category =
+            input.dataset.category;
+
+        const item =
+            input.dataset.item;
+
+        input.checked =
+            Boolean(
+                record[category][item]
+            );
     });
 }
 
 function renderReview(record) {
-    const container = document.getElementById("reviewList");
+
+    const container =
+        document.getElementById(
+            "reviewList"
+        );
 
     container.innerHTML = "";
 
-    data.reviewSubjects.forEach((subject, index) => {
+    data.reviewSubjects.forEach(
+        (subject, index) => {
 
-        const wrapper = document.createElement("div");
-        wrapper.className = "review-item";
+            const wrapper =
+                document.createElement(
+                    "div"
+                );
 
-        const label = document.createElement("label");
+            wrapper.className =
+                "review-item";
 
-        const checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
+            const label =
+                document.createElement(
+                    "label"
+                );
 
-        checkbox.checked = Boolean(record.review[index]);
+            const checkbox =
+                document.createElement(
+                    "input"
+                );
 
-        checkbox.dataset.reviewIndex = index;
+            checkbox.type =
+                "checkbox";
 
-        checkbox.addEventListener("change", () => {
+            checkbox.checked =
+                Boolean(
+                    record.review[index]
+                );
 
-            if (!isToday()) {
-                checkbox.checked = Boolean(record.review[index]);
-                return;
-            }
+            checkbox.dataset.reviewIndex =
+                index;
 
-            record.review[index] = checkbox.checked;
+            checkbox.addEventListener(
+                "change",
+                () => {
 
-            saveData();
-        });
+                    if (!isToday()) {
 
-        const text = document.createElement("span");
-        text.textContent = subject;
+                        checkbox.checked =
+                            Boolean(
+                                record.review[index]
+                            );
 
-        label.appendChild(checkbox);
-        label.appendChild(text);
+                        return;
+                    }
 
-        const deleteButton = document.createElement("button");
+                    record.review[index] =
+                        checkbox.checked;
 
-        deleteButton.className = "delete-review";
-        deleteButton.textContent = "×";
-        deleteButton.title = "Delete subject";
+                    saveData();
+                }
+            );
 
-        deleteButton.addEventListener("click", () => {
-            deleteReviewSubject(index);
-        });
+            const text =
+                document.createElement(
+                    "span"
+                );
 
-        wrapper.appendChild(label);
-        wrapper.appendChild(deleteButton);
+            text.textContent =
+                subject;
 
-        container.appendChild(wrapper);
-    });
+            label.appendChild(
+                checkbox
+            );
+
+            label.appendChild(
+                text
+            );
+
+            const deleteButton =
+                document.createElement(
+                    "button"
+                );
+
+            deleteButton.className =
+                "delete-review";
+
+            deleteButton.textContent =
+                "×";
+
+            deleteButton.title =
+                "Delete subject";
+
+            deleteButton.addEventListener(
+                "click",
+                () => {
+                    deleteReviewSubject(
+                        index
+                    );
+                }
+            );
+
+            wrapper.appendChild(
+                label
+            );
+
+            wrapper.appendChild(
+                deleteButton
+            );
+
+            container.appendChild(
+                wrapper
+            );
+        }
+    );
 }
 
 function updateEditability() {
-    const editable = isToday();
 
-    document.querySelectorAll(".fixed-check").forEach(input => {
-        input.disabled = !editable;
-    });
+    const editable =
+        isToday();
 
-    const addButton = document.getElementById("addReview");
+    document
+        .querySelectorAll(
+            ".fixed-check"
+        )
+        .forEach(input => {
+
+            input.disabled =
+                !editable;
+        });
+
+    const addButton =
+        document.getElementById(
+            "addReview"
+        );
 
     /*
-     * Review subjects themselves can be managed independently
-     * from the daily check status.
+     * Review subjects themselves can be
+     * managed independently from the
+     * daily check status.
      */
+
     addButton.disabled = false;
 
-    document.querySelectorAll(".delete-review").forEach(button => {
-        button.disabled = false;
-    });
+    document
+        .querySelectorAll(
+            ".delete-review"
+        )
+        .forEach(button => {
 
-    document.querySelectorAll(".section").forEach(section => {
-        if (editable) {
-            section.classList.remove("read-only");
-        } else {
-            section.classList.add("read-only");
-        }
-    });
+            button.disabled = false;
+        });
+
+    document
+        .querySelectorAll(
+            ".section"
+        )
+        .forEach(section => {
+
+            if (editable) {
+
+                section.classList.remove(
+                    "read-only"
+                );
+
+            } else {
+
+                section.classList.add(
+                    "read-only"
+                );
+            }
+        });
 }
 
-document.querySelectorAll(".fixed-check").forEach(input => {
 
-    input.addEventListener("change", () => {
+/* =========================================
+   FIXED CHECKBOXES
+========================================= */
 
-        if (!isToday()) {
-            render();
-            return;
-        }
+document
+    .querySelectorAll(
+        ".fixed-check"
+    )
+    .forEach(input => {
 
-        const record = getRecord(currentDate);
+        input.addEventListener(
+            "change",
+            () => {
 
-        const category = input.dataset.category;
-        const item = input.dataset.item;
+                if (!isToday()) {
 
-        record[category][item] = input.checked;
+                    render();
 
-        saveData();
+                    return;
+                }
+
+                const record =
+                    getRecord(
+                        currentDate
+                    );
+
+                const category =
+                    input.dataset.category;
+
+                const item =
+                    input.dataset.item;
+
+                record[category][item] =
+                    input.checked;
+
+                saveData();
+            }
+        );
     });
-});
 
-document.getElementById("prevDay").addEventListener("click", () => {
 
-    const date = dateToObject(currentDate);
+/* =========================================
+   PREVIOUS DAY
+========================================= */
 
-    date.setDate(date.getDate() - 1);
+document
+    .getElementById("prevDay")
+    .addEventListener(
+        "click",
+        () => {
 
-    currentDate = dateToString(date);
+            const date =
+                dateToObject(
+                    currentDate
+                );
 
-    render();
-});
+            date.setDate(
+                date.getDate() - 1
+            );
 
-document.getElementById("nextDay").addEventListener("click", () => {
+            currentDate =
+                dateToString(date);
 
-    const date = dateToObject(currentDate);
+            render();
+        }
+    );
 
-    date.setDate(date.getDate() + 1);
 
-    currentDate = dateToString(date);
+/* =========================================
+   NEXT DAY
+========================================= */
 
-    render();
-});
+document
+    .getElementById("nextDay")
+    .addEventListener(
+        "click",
+        () => {
+
+            const date =
+                dateToObject(
+                    currentDate
+                );
+
+            date.setDate(
+                date.getDate() + 1
+            );
+
+            currentDate =
+                dateToString(date);
+
+            render();
+        }
+    );
+
+
+/* =========================================
+   DATE TO STRING
+========================================= */
 
 function dateToString(date) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
+
+    const year =
+        date.getFullYear();
+
+    const month =
+        String(
+            date.getMonth() + 1
+        ).padStart(2, "0");
+
+    const day =
+        String(
+            date.getDate()
+        ).padStart(2, "0");
 
     return `${year}-${month}-${day}`;
 }
 
-document.getElementById("addReview").addEventListener("click", () => {
 
-    const subject = prompt("Enter a Review subject:");
+/* =========================================
+   ADD REVIEW SUBJECT
+========================================= */
 
-    if (subject === null) {
-        return;
-    }
+document
+    .getElementById("addReview")
+    .addEventListener(
+        "click",
+        () => {
 
-    const trimmed = subject.trim();
+            const subject =
+                prompt(
+                    "Enter a Review subject:"
+                );
 
-    if (!trimmed) {
-        return;
-    }
+            if (subject === null) {
+                return;
+            }
 
-    if (data.reviewSubjects.includes(trimmed)) {
-        alert("This subject already exists.");
+            const trimmed =
+                subject.trim();
 
-        return;
-    }
+            if (!trimmed) {
+                return;
+            }
 
-    data.reviewSubjects.push(trimmed);
+            if (
+                data.reviewSubjects
+                    .includes(trimmed)
+            ) {
 
-    saveData();
+                alert(
+                    "This subject already exists."
+                );
 
-    render();
-});
+                return;
+            }
+
+            data.reviewSubjects.push(
+                trimmed
+            );
+
+            saveData();
+
+            render();
+        }
+    );
+
+
+/* =========================================
+   DELETE REVIEW SUBJECT
+========================================= */
 
 function deleteReviewSubject(index) {
 
-    const subject = data.reviewSubjects[index];
+    const subject =
+        data.reviewSubjects[index];
 
-    const confirmed = confirm(
-        `Delete "${subject}" from Review?`
-    );
+    const confirmed =
+        confirm(
+            `Delete "${subject}" from Review?`
+        );
 
     if (!confirmed) {
         return;
     }
 
-    data.reviewSubjects.splice(index, 1);
+    data.reviewSubjects.splice(
+        index,
+        1
+    );
 
     /*
-     * Remove this subject's check from every stored day.
-     * The indexes of the remaining subjects are rebuilt.
+     * Remove this subject's check
+     * from every stored day.
+     * The indexes of the remaining
+     * subjects are rebuilt.
      */
-    Object.keys(data.records).forEach(date => {
 
-        const oldReview = data.records[date].review || {};
+    Object.keys(
+        data.records
+    ).forEach(date => {
+
+        const oldReview =
+            data.records[date]
+                .review || {};
+
         const newReview = {};
 
-        data.reviewSubjects.forEach((_, newIndex) => {
+        data.reviewSubjects.forEach(
+            (_, newIndex) => {
 
-            let oldIndex = newIndex;
+                let oldIndex =
+                    newIndex;
 
-            if (newIndex >= index) {
-                oldIndex = newIndex + 1;
+                if (
+                    newIndex >= index
+                ) {
+
+                    oldIndex =
+                        newIndex + 1;
+                }
+
+                if (
+                    oldReview[oldIndex]
+                ) {
+
+                    newReview[newIndex] =
+                        true;
+                }
             }
+        );
 
-            if (oldReview[oldIndex]) {
-                newReview[newIndex] = true;
-            }
-        });
-
-        data.records[date].review = newReview;
+        data.records[date].review =
+            newReview;
     });
 
     saveData();
 
     render();
 }
+
+
+/* =========================================
+   INITIAL RENDER
+========================================= */
 
 render();
