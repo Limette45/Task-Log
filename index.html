@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,1208 +10,1357 @@
 <link rel="stylesheet" href="style.css">
 
 <style>
+
 /* =========================
-   History
+   History Page
 ========================= */
 
 #historyPage {
-  display: none;
+    display: none;
 }
 
 .history-section {
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 18px;
-  margin-bottom: 20px;
-  overflow-x: auto;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 20px;
+    overflow-x: auto;
 }
 
 .history-section h2 {
-  margin: 0 0 15px;
-  font-size: 20px;
+    margin: 0 0 15px;
+    font-size: 20px;
 }
 
 .history-table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 500px;
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 500px;
 }
 
 .history-table th,
 .history-table td {
-  border: 1px solid #ddd;
-  padding: 8px 10px;
-  text-align: center;
-  white-space: nowrap;
+    border: 1px solid #ddd;
+    padding: 8px 10px;
+    text-align: center;
+    white-space: nowrap;
 }
 
 .history-table th {
-  background: #f5f7fa;
-  font-weight: bold;
+    background: #f5f7fa;
+    font-weight: bold;
 }
 
-.history-table td:first-child,
-.history-table th:first-child {
-  text-align: left;
+.history-table th:first-child,
+.history-table td:first-child {
+    text-align: left;
 }
 
 .history-empty {
-  color: #777;
-  padding: 5px 0;
+    color: #777;
+    padding: 5px 0;
 }
 
+
 /* =========================
-   History buttons
+   History Buttons
 ========================= */
 
 #openHistory,
 #backToMain {
-  border: 1px solid #ccc;
-  border-radius: 7px;
-  background: white;
-  padding: 8px 14px;
-  cursor: pointer;
-  font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    background: white;
+    padding: 8px 14px;
+    cursor: pointer;
+    font-size: 14px;
 }
 
 #openHistory:hover,
 #backToMain:hover {
-  background: #eee;
+    background: #eee;
 }
+
 
 /* =========================
    Comment
 ========================= */
 
 #dailyComment {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  resize: vertical;
-  font-family: Arial, sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    resize: vertical;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
 }
 
 #dailyComment:disabled {
-  background: #f5f5f5;
-  color: #555;
-  cursor: default;
+    background: #f5f5f5;
+    color: #555;
+    cursor: default;
 }
+
 
 /* =========================
    Comment History
 ========================= */
 
 .comment-history-item {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 12px;
-  margin-bottom: 10px;
-  background: #fafafa;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+    background: #fafafa;
 }
 
 .comment-history-date {
-  font-weight: bold;
-  margin-bottom: 7px;
+    font-weight: bold;
+    margin-bottom: 7px;
 }
 
 .comment-history-text {
-  white-space: pre-wrap;
-  line-height: 1.5;
+    white-space: pre-wrap;
+    line-height: 1.5;
 }
 
 .comment-history-empty {
-  color: #777;
+    color: #777;
 }
+
 </style>
 
 </head>
+
 
 <body>
 
 <div class="app">
 
-  <!-- =========================
-       MAIN PAGE
-  ========================== -->
 
-  <div id="mainPage">
+    <!-- =================================================
+         MAIN PAGE
+    ================================================== -->
 
-    <!-- Date Navigation -->
+    <div id="mainPage">
 
-    <div class="date-navigation">
 
-      <button id="prevDay">←</button>
+        <!-- =========================
+             Date Navigation
+        ========================== -->
 
-      <div id="dateDisplay"></div>
+        <div class="date-navigation">
 
-      <button id="nextDay">→</button>
+            <button id="prevDay">
+                ←
+            </button>
+
+            <div id="dateDisplay"></div>
+
+            <button id="nextDay">
+                →
+            </button>
+
+        </div>
+
+
+        <!-- =========================
+             Comment
+        ========================== -->
+
+        <section class="section">
+
+            <h2>Comment</h2>
+
+            <textarea
+                id="dailyComment"
+                placeholder="Write a comment for today..."
+                rows="5"
+            ></textarea>
+
+        </section>
+
+
+        <!-- =========================
+             Vocab
+        ========================== -->
+
+        <section class="section">
+
+            <h2>Vocab</h2>
+
+
+            <label>
+
+                <input
+                    type="checkbox"
+                    class="fixed-check"
+                    data-category="vocab"
+                    data-item="espDATA"
+                >
+
+                <span>
+                    espDATA
+                </span>
+
+            </label>
+
+
+            <label>
+
+                <input
+                    type="checkbox"
+                    class="fixed-check"
+                    data-category="vocab"
+                    data-item="engDATA"
+                >
+
+                <span>
+                    engDATA
+                </span>
+
+            </label>
+
+
+            <label>
+
+                <input
+                    type="checkbox"
+                    class="fixed-check"
+                    data-category="vocab"
+                    data-item="engSVL"
+                >
+
+                <span>
+                    engSVL
+                </span>
+
+            </label>
+
+
+            <label>
+
+                <input
+                    type="checkbox"
+                    class="fixed-check"
+                    data-category="vocab"
+                    data-item="deuDATA"
+                >
+
+                <span>
+                    deuDATA
+                </span>
+
+            </label>
+
+
+            <label>
+
+                <input
+                    type="checkbox"
+                    class="fixed-check"
+                    data-category="vocab"
+                    data-item="espA1-2"
+                >
+
+                <span>
+                    espA1-2
+                </span>
+
+            </label>
+
+        </section>
+
+
+        <!-- =========================
+             Lang
+        ========================== -->
+
+        <section class="section">
+
+            <h2>Lang</h2>
+
+
+            <label>
+
+                <input
+                    type="checkbox"
+                    class="fixed-check"
+                    data-category="lang"
+                    data-item="engNews"
+                >
+
+                <span>
+                    engNews
+                </span>
+
+            </label>
+
+
+            <label>
+
+                <input
+                    type="checkbox"
+                    class="fixed-check"
+                    data-category="lang"
+                    data-item="engLyrics"
+                >
+
+                <span>
+                    engLyrics
+                </span>
+
+            </label>
+
+
+            <label>
+
+                <input
+                    type="checkbox"
+                    class="fixed-check"
+                    data-category="lang"
+                    data-item="espLyrics"
+                >
+
+                <span>
+                    espLyrics
+                </span>
+
+            </label>
+
+        </section>
+
+
+        <!-- =========================
+             Review
+        ========================== -->
+
+        <section class="section">
+
+            <div class="section-header">
+
+                <h2>
+                    Review
+                </h2>
+
+                <button id="addReview">
+                    ＋ Add
+                </button>
+
+            </div>
+
+
+            <div id="reviewList"></div>
+
+        </section>
+
+
+        <!-- =========================
+             History Button
+        ========================== -->
+
+        <section class="section">
+
+            <button id="openHistory">
+                History
+            </button>
+
+        </section>
+
 
     </div>
 
 
-    <!-- =========================
-         Comment
-    ========================== -->
 
-    <section class="section">
+    <!-- =================================================
+         HISTORY PAGE
+    ================================================== -->
 
-      <h2>Comment</h2>
-
-      <textarea
-        id="dailyComment"
-        placeholder="Write a comment for today..."
-        rows="5"
-      ></textarea>
-
-    </section>
+    <div id="historyPage">
 
 
-    <!-- =========================
-         Vocab
-    ========================== -->
+        <!-- =========================
+             History Header
+        ========================== -->
 
-    <section class="section">
+        <div class="date-navigation">
 
-      <h2>Vocab</h2>
-
-      <label>
-        <input
-          type="checkbox"
-          class="fixed-check"
-          data-category="vocab"
-          data-item="espDATA"
-        >
-        <span>espDATA</span>
-      </label>
-
-      <label>
-        <input
-          type="checkbox"
-          class="fixed-check"
-          data-category="vocab"
-          data-item="engDATA"
-        >
-        <span>engDATA</span>
-      </label>
-
-      <label>
-        <input
-          type="checkbox"
-          class="fixed-check"
-          data-category="vocab"
-          data-item="engSVL"
-        >
-        <span>engSVL</span>
-      </label>
-
-      <label>
-        <input
-          type="checkbox"
-          class="fixed-check"
-          data-category="vocab"
-          data-item="deuDATA"
-        >
-        <span>deuDATA</span>
-      </label>
-
-      <label>
-        <input
-          type="checkbox"
-          class="fixed-check"
-          data-category="vocab"
-          data-item="espA1-2"
-        >
-        <span>espA1-2</span>
-      </label>
-
-    </section>
+            <div
+                style="
+                    font-size:22px;
+                    font-weight:bold;
+                "
+            >
+                History
+            </div>
 
 
-    <!-- =========================
-         Lang
-    ========================== -->
+            <button id="backToMain">
+                Back
+            </button>
 
-    <section class="section">
-
-      <h2>Lang</h2>
-
-      <label>
-        <input
-          type="checkbox"
-          class="fixed-check"
-          data-category="lang"
-          data-item="engNews"
-        >
-        <span>engNews</span>
-      </label>
-
-      <label>
-        <input
-          type="checkbox"
-          class="fixed-check"
-          data-category="lang"
-          data-item="engLyrics"
-        >
-        <span>engLyrics</span>
-      </label>
-
-      <label>
-        <input
-          type="checkbox"
-          class="fixed-check"
-          data-category="lang"
-          data-item="espLyrics"
-        >
-        <span>espLyrics</span>
-      </label>
-
-    </section>
+        </div>
 
 
-    <!-- =========================
-         Review
-    ========================== -->
+        <!-- =========================
+             Vocab History
+        ========================== -->
 
-    <section class="section">
+        <section class="history-section">
 
-      <div class="section-header">
+            <h2>
+                Vocab History
+            </h2>
 
-        <h2>Review</h2>
+            <div id="vocabHistory"></div>
 
-        <button id="addReview">
-          ＋ Add
-        </button>
-
-      </div>
-
-      <div id="reviewList"></div>
-
-    </section>
+        </section>
 
 
-    <!-- =========================
-         History Button
-    ========================== -->
+        <!-- =========================
+             Lang History
+        ========================== -->
 
-    <section class="section">
+        <section class="history-section">
 
-      <button id="openHistory">
-        History
-      </button>
+            <h2>
+                Lang History
+            </h2>
 
-    </section>
+            <div id="langHistory"></div>
 
-  </div>
+        </section>
 
 
-  <!-- =========================
-       HISTORY PAGE
-  ========================== -->
+        <!-- =========================
+             Review History
+        ========================== -->
 
-  <div id="historyPage">
+        <section class="history-section">
 
-    <div class="date-navigation">
+            <h2>
+                Review History
+            </h2>
 
-      <div style="font-size:22px; font-weight:bold;">
-        History
-      </div>
+            <div id="reviewHistory"></div>
 
-      <button id="backToMain">
-        Back
-      </button>
+        </section>
+
+
+        <!-- =========================
+             Comment History
+        ========================== -->
+
+        <section class="history-section">
+
+            <h2>
+                Comment History
+            </h2>
+
+            <div id="commentHistory"></div>
+
+        </section>
+
 
     </div>
-
-
-    <!-- =========================
-         Vocab History
-    ========================== -->
-
-    <section class="history-section">
-
-      <h2>Vocab History</h2>
-
-      <div id="vocabHistory"></div>
-
-    </section>
-
-
-    <!-- =========================
-         Lang History
-    ========================== -->
-
-    <section class="history-section">
-
-      <h2>Lang History</h2>
-
-      <div id="langHistory"></div>
-
-    </section>
-
-
-    <!-- =========================
-         Review History
-    ========================== -->
-
-    <section class="history-section">
-
-      <h2>Review History</h2>
-
-      <div id="reviewHistory"></div>
-
-    </section>
-
-
-    <!-- =========================
-         Comment History
-    ========================== -->
-
-    <section class="history-section">
-
-      <h2>Comment History</h2>
-
-      <div id="commentHistory"></div>
-
-    </section>
-
-  </div>
 
 </div>
 
 
-<!-- =========================
-     Existing JavaScript
-========================== -->
+
+<!-- =================================================
+     Existing script.js
+================================================== -->
 
 <script src="script.js"></script>
 
 
-<!-- =========================
+
+<!-- =================================================
      Comment + History
-========================== -->
+================================================== -->
 
 <script>
 
 (function () {
 
-  const STORAGE_KEY = "studyRecordData";
 
-  const vocabItems = [
-    "espDATA",
-    "engDATA",
-    "engSVL",
-    "deuDATA",
-    "espA1-2"
-  ];
-
-  const langItems = [
-    "engNews",
-    "engLyrics",
-    "espLyrics"
-  ];
+    const STORAGE_KEY =
+        "studyRecordData";
 
 
-  /* =================================
-     COMMENT
-  ================================= */
-
-  const commentBox =
-    document.getElementById("dailyComment");
-
-
-  function loadComment() {
-
-    if (!commentBox) return;
-
-    const record =
-      data.records[currentDate];
-
-    if (
-      record &&
-      typeof record.comment === "string"
-    ) {
-
-      commentBox.value =
-        record.comment;
-
-    } else {
-
-      commentBox.value = "";
-
-    }
-
-    commentBox.disabled =
-      !isToday();
-
-  }
+    const vocabItems = [
+        "espDATA",
+        "engDATA",
+        "engSVL",
+        "deuDATA",
+        "espA1-2"
+    ];
 
 
-  commentBox.addEventListener(
-    "input",
-    function () {
+    const langItems = [
+        "engNews",
+        "engLyrics",
+        "espLyrics"
+    ];
 
-      if (!isToday()) {
 
-        loadComment();
 
-        return;
+    /* =================================================
+       COMMENT
+    ================================================= */
 
-      }
+    const commentBox =
+        document.getElementById(
+            "dailyComment"
+        );
 
-      const record =
-        getRecord(currentDate);
 
-      record.comment =
-        commentBox.value;
+    function loadComment() {
 
-      saveData();
+        if (!commentBox) {
+            return;
+        }
+
+
+        const record =
+            data.records[currentDate];
+
+
+        if (
+            record &&
+            typeof record.comment === "string"
+        ) {
+
+            commentBox.value =
+                record.comment;
+
+        } else {
+
+            commentBox.value = "";
+
+        }
+
+
+        commentBox.disabled =
+            !isToday();
 
     }
-  );
 
 
-  /*
-    Detect date changes made by
-    the existing script.js.
-  */
 
-  let lastCommentDate =
-    currentDate;
+    commentBox.addEventListener(
+        "input",
+        function () {
+
+            if (!isToday()) {
+
+                loadComment();
+
+                return;
+            }
 
 
-  setInterval(function () {
+            const record =
+                getRecord(currentDate);
 
-    if (
-      currentDate !==
-      lastCommentDate
-    ) {
 
-      lastCommentDate =
+            record.comment =
+                commentBox.value;
+
+
+            saveData();
+
+        }
+    );
+
+
+
+    /*
+     * Detect date changes made by
+     * script.js.
+     */
+
+    let lastCommentDate =
         currentDate;
 
-      loadComment();
+
+    setInterval(
+        function () {
+
+            if (
+                currentDate !==
+                lastCommentDate
+            ) {
+
+                lastCommentDate =
+                    currentDate;
+
+
+                loadComment();
+
+            }
+
+
+            commentBox.disabled =
+                !isToday();
+
+        },
+        100
+    );
+
+
+    loadComment();
+
+
+
+    /* =================================================
+       HISTORY
+    ================================================= */
+
+    const mainPage =
+        document.getElementById(
+            "mainPage"
+        );
+
+
+    const historyPage =
+        document.getElementById(
+            "historyPage"
+        );
+
+
+    const openHistory =
+        document.getElementById(
+            "openHistory"
+        );
+
+
+    const backToMain =
+        document.getElementById(
+            "backToMain"
+        );
+
+
+
+    /* =================================================
+       LOAD DATA
+    ================================================= */
+
+    function loadHistoryData() {
+
+        try {
+
+            const saved =
+                localStorage.getItem(
+                    STORAGE_KEY
+                );
+
+
+            if (!saved) {
+
+                return {
+                    records: {},
+                    reviewSubjects: []
+                };
+
+            }
+
+
+            const parsed =
+                JSON.parse(saved);
+
+
+            return {
+
+                records:
+                    parsed.records || {},
+
+                reviewSubjects:
+                    parsed.reviewSubjects || []
+
+            };
+
+
+        } catch (error) {
+
+            console.error(
+                "Failed to load history:",
+                error
+            );
+
+
+            return {
+                records: {},
+                reviewSubjects: []
+            };
+
+        }
 
     }
 
-    commentBox.disabled =
-      !isToday();
-
-  }, 100);
 
 
-  loadComment();
+    /* =================================================
+       HISTORY DATES
+       
+       IMPORTANT:
+       script.js provides getHistoryDates()
+       which returns currentDate ± 5 days.
+    ================================================= */
 
+    function getDates(historyData) {
 
-  /* =================================
-     HISTORY
-  ================================= */
-
-  const mainPage =
-    document.getElementById(
-      "mainPage"
-    );
-
-  const historyPage =
-    document.getElementById(
-      "historyPage"
-    );
-
-  const openHistory =
-    document.getElementById(
-      "openHistory"
-    );
-
-  const backToMain =
-    document.getElementById(
-      "backToMain"
-    );
-
-
-  function loadHistoryData() {
-
-    try {
-
-      const saved =
-        localStorage.getItem(
-          STORAGE_KEY
-        );
-
-      if (!saved) {
-
-        return {
-          records: {},
-          reviewSubjects: []
-        };
-
-      }
-
-      const parsed =
-        JSON.parse(saved);
-
-      return {
-
-        records:
-          parsed.records || {},
-
-        reviewSubjects:
-          parsed.reviewSubjects || []
-
-      };
-
-    } catch (error) {
-
-      console.error(
-        "Failed to load history:",
-        error
-      );
-
-      return {
-        records: {},
-        reviewSubjects: []
-      };
+        return getHistoryDates();
 
     }
 
-  }
 
 
-  function getDates(historyData) {
+    /* =================================================
+       FORMAT DATE
+    ================================================= */
 
-    return Object.keys(
-      historyData.records
-    ).sort(function (a, b) {
+    function formatHistoryDate(
+        dateString
+    ) {
 
-      return b.localeCompare(a);
-
-    });
-
-  }
-
-
-  function formatHistoryDate(
-    dateString
-  ) {
-
-    const parts =
-      dateString.split("-");
-
-    return (
-      parts[1] +
-      "/" +
-      parts[2]
-    );
-
-  }
+        const parts =
+            dateString.split("-");
 
 
-  /* =================================
-     CREATE HISTORY TABLE
-  ================================= */
-
-  function createHistoryTable(
-    dates,
-    items,
-    category,
-    historyData
-  ) {
-
-    const table =
-      document.createElement(
-        "table"
-      );
-
-    table.className =
-      "history-table";
-
-
-    const thead =
-      document.createElement(
-        "thead"
-      );
-
-    const headerRow =
-      document.createElement(
-        "tr"
-      );
-
-
-    const dateHeader =
-      document.createElement(
-        "th"
-      );
-
-    dateHeader.textContent =
-      "Date";
-
-    headerRow.appendChild(
-      dateHeader
-    );
-
-
-    items.forEach(function (item) {
-
-      const th =
-        document.createElement(
-          "th"
+        return (
+            parts[1] +
+            "/" +
+            parts[2]
         );
 
-      th.textContent =
-        item;
-
-      headerRow.appendChild(th);
-
-    });
+    }
 
 
-    thead.appendChild(
-      headerRow
-    );
 
-    table.appendChild(
-      thead
-    );
+    /* =================================================
+       CREATE HISTORY TABLE
+    ================================================= */
 
+    function createHistoryTable(
+        dates,
+        items,
+        category,
+        historyData
+    ) {
 
-    const tbody =
-      document.createElement(
-        "tbody"
-      );
-
-
-    dates.forEach(function (date) {
-
-      const record =
-        historyData.records[date];
-
-      if (!record) return;
+        const table =
+            document.createElement(
+                "table"
+            );
 
 
-      const row =
-        document.createElement(
-          "tr"
+        table.className =
+            "history-table";
+
+
+        const thead =
+            document.createElement(
+                "thead"
+            );
+
+
+        const headerRow =
+            document.createElement(
+                "tr"
+            );
+
+
+        const dateHeader =
+            document.createElement(
+                "th"
+            );
+
+
+        dateHeader.textContent =
+            "Date";
+
+
+        headerRow.appendChild(
+            dateHeader
         );
 
 
-      const dateCell =
-        document.createElement(
-          "td"
+        items.forEach(
+            function (item) {
+
+                const th =
+                    document.createElement(
+                        "th"
+                    );
+
+
+                th.textContent =
+                    item;
+
+
+                headerRow.appendChild(
+                    th
+                );
+
+            }
         );
 
-      dateCell.textContent =
-        formatHistoryDate(date);
 
-      row.appendChild(
-        dateCell
-      );
+        thead.appendChild(
+            headerRow
+        );
 
 
-      items.forEach(function (
-        item,
-        index
-      ) {
-
-        const cell =
-          document.createElement(
-            "td"
-          );
+        table.appendChild(
+            thead
+        );
 
 
-        let checked = false;
+
+        const tbody =
+            document.createElement(
+                "tbody"
+            );
+
+
+        dates.forEach(
+            function (date) {
+
+                const record =
+                    historyData.records[date];
+
+
+                const row =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                const dateCell =
+                    document.createElement(
+                        "td"
+                    );
+
+
+                dateCell.textContent =
+                    formatHistoryDate(
+                        date
+                    );
+
+
+                row.appendChild(
+                    dateCell
+                );
+
+
+
+                items.forEach(
+                    function (
+                        item,
+                        index
+                    ) {
+
+                        const cell =
+                            document.createElement(
+                                "td"
+                            );
+
+
+                        let checked =
+                            false;
+
+
+
+                        /* =========================
+                           Vocab / Lang
+                        ========================== */
+
+                        if (
+                            category === "vocab" ||
+                            category === "lang"
+                        ) {
+
+                            checked =
+                                Boolean(
+                                    record &&
+                                    record[category] &&
+                                    record[category][item]
+                                );
+
+                        }
+
+
+
+                        /* =========================
+                           Review
+
+                           script.js stores Review
+                           using numeric indexes.
+                        ========================== */
+
+                        if (
+                            category === "review"
+                        ) {
+
+                            checked =
+                                Boolean(
+                                    record &&
+                                    record.review &&
+                                    record.review[index]
+                                );
+
+                        }
+
+
+
+                        cell.textContent =
+                            checked
+                                ? "✓"
+                                : "—";
+
+
+                        row.appendChild(
+                            cell
+                        );
+
+                    }
+                );
+
+
+                tbody.appendChild(
+                    row
+                );
+
+            }
+        );
+
+
+        table.appendChild(
+            tbody
+        );
+
+
+        return table;
+
+    }
+
+
+
+    /* =================================================
+       VOCAB HISTORY
+    ================================================= */
+
+    function renderVocabHistory(
+        historyData
+    ) {
+
+        const container =
+            document.getElementById(
+                "vocabHistory"
+            );
+
+
+        container.innerHTML = "";
+
+
+        const dates =
+            getDates(historyData);
+
+
+        const table =
+            createHistoryTable(
+                dates,
+                vocabItems,
+                "vocab",
+                historyData
+            );
+
+
+        container.appendChild(
+            table
+        );
+
+    }
+
+
+
+    /* =================================================
+       LANG HISTORY
+    ================================================= */
+
+    function renderLangHistory(
+        historyData
+    ) {
+
+        const container =
+            document.getElementById(
+                "langHistory"
+            );
+
+
+        container.innerHTML = "";
+
+
+        const dates =
+            getDates(historyData);
+
+
+        const table =
+            createHistoryTable(
+                dates,
+                langItems,
+                "lang",
+                historyData
+            );
+
+
+        container.appendChild(
+            table
+        );
+
+    }
+
+
+
+    /* =================================================
+       REVIEW HISTORY
+    ================================================= */
+
+    function renderReviewHistory(
+        historyData
+    ) {
+
+        const container =
+            document.getElementById(
+                "reviewHistory"
+            );
+
+
+        container.innerHTML = "";
+
+
+        const subjects =
+            historyData.reviewSubjects;
 
 
         if (
-          category === "vocab" ||
-          category === "lang"
+            subjects.length === 0
         ) {
 
-          checked =
-            Boolean(
-              record[category] &&
-              record[category][item]
+            const empty =
+                document.createElement(
+                    "div"
+                );
+
+
+            empty.className =
+                "history-empty";
+
+
+            empty.textContent =
+                "No Review subjects yet.";
+
+
+            container.appendChild(
+                empty
+            );
+
+
+            return;
+
+        }
+
+
+        const dates =
+            getDates(historyData);
+
+
+        const table =
+            createHistoryTable(
+                dates,
+                subjects,
+                "review",
+                historyData
+            );
+
+
+        container.appendChild(
+            table
+        );
+
+    }
+
+
+
+    /* =================================================
+       COMMENT HISTORY
+    ================================================= */
+
+    function renderCommentHistory(
+        historyData
+    ) {
+
+        const container =
+            document.getElementById(
+                "commentHistory"
+            );
+
+
+        container.innerHTML = "";
+
+
+        const dates =
+            getDates(historyData);
+
+
+        let hasComments =
+            false;
+
+
+
+        dates.forEach(
+            function (date) {
+
+                const record =
+                    historyData.records[date];
+
+
+                if (
+                    !record ||
+                    typeof record.comment !==
+                        "string" ||
+                    record.comment.trim() === ""
+                ) {
+
+                    return;
+
+                }
+
+
+                hasComments =
+                    true;
+
+
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                item.className =
+                    "comment-history-item";
+
+
+
+                const dateElement =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                dateElement.className =
+                    "comment-history-date";
+
+
+                dateElement.textContent =
+                    formatHistoryDate(
+                        date
+                    );
+
+
+
+                const text =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                text.className =
+                    "comment-history-text";
+
+
+                text.textContent =
+                    record.comment;
+
+
+
+                item.appendChild(
+                    dateElement
+                );
+
+
+                item.appendChild(
+                    text
+                );
+
+
+                container.appendChild(
+                    item
+                );
+
+            }
+        );
+
+
+
+        if (!hasComments) {
+
+            const empty =
+                document.createElement(
+                    "div"
+                );
+
+
+            empty.className =
+                "comment-history-empty";
+
+
+            empty.textContent =
+                "No comments yet.";
+
+
+            container.appendChild(
+                empty
             );
 
         }
 
+    }
 
-        /*
-          Review data in script.js
-          is stored by numeric index.
-        */
 
-        if (
-          category === "review"
-        ) {
 
-          checked =
-            Boolean(
-              record.review &&
-              record.review[index]
+    /* =================================================
+       RENDER HISTORY
+    ================================================= */
+
+    function renderHistory() {
+
+        const historyData =
+            loadHistoryData();
+
+
+        renderVocabHistory(
+            historyData
+        );
+
+
+        renderLangHistory(
+            historyData
+        );
+
+
+        renderReviewHistory(
+            historyData
+        );
+
+
+        renderCommentHistory(
+            historyData
+        );
+
+    }
+
+
+
+    /* =================================================
+       OPEN HISTORY
+    ================================================= */
+
+    openHistory.addEventListener(
+        "click",
+        function () {
+
+            renderHistory();
+
+
+            mainPage.style.display =
+                "none";
+
+
+            historyPage.style.display =
+                "block";
+
+
+            window.scrollTo(
+                0,
+                0
             );
 
         }
-
-
-        cell.textContent =
-          checked ? "✓" : "—";
-
-
-        row.appendChild(
-          cell
-        );
-
-      });
-
-
-      tbody.appendChild(
-        row
-      );
-
-    });
-
-
-    table.appendChild(
-      tbody
     );
 
 
-    return table;
 
-  }
+    /* =================================================
+       BACK TO MAIN
+    ================================================= */
 
+    backToMain.addEventListener(
+        "click",
+        function () {
 
-  /* =================================
-     VOCAB HISTORY
-  ================================= */
+            historyPage.style.display =
+                "none";
 
-  function renderVocabHistory(
-    historyData
-  ) {
 
-    const container =
-      document.getElementById(
-        "vocabHistory"
-      );
+            mainPage.style.display =
+                "block";
 
-    container.innerHTML = "";
 
+            loadComment();
 
-    const dates =
-      getDates(historyData);
 
-
-    if (dates.length === 0) {
-
-      const empty =
-        document.createElement(
-          "div"
-        );
-
-      empty.className =
-        "history-empty";
-
-      empty.textContent =
-        "No history yet.";
-
-      container.appendChild(
-        empty
-      );
-
-      return;
-
-    }
-
-
-    const table =
-      createHistoryTable(
-        dates,
-        vocabItems,
-        "vocab",
-        historyData
-      );
-
-
-    container.appendChild(
-      table
-    );
-
-  }
-
-
-  /* =================================
-     LANG HISTORY
-  ================================= */
-
-  function renderLangHistory(
-    historyData
-  ) {
-
-    const container =
-      document.getElementById(
-        "langHistory"
-      );
-
-    container.innerHTML = "";
-
-
-    const dates =
-      getDates(historyData);
-
-
-    if (dates.length === 0) {
-
-      const empty =
-        document.createElement(
-          "div"
-        );
-
-      empty.className =
-        "history-empty";
-
-      empty.textContent =
-        "No history yet.";
-
-      container.appendChild(
-        empty
-      );
-
-      return;
-
-    }
-
-
-    const table =
-      createHistoryTable(
-        dates,
-        langItems,
-        "lang",
-        historyData
-      );
-
-
-    container.appendChild(
-      table
-    );
-
-  }
-
-
-  /* =================================
-     REVIEW HISTORY
-  ================================= */
-
-  function renderReviewHistory(
-    historyData
-  ) {
-
-    const container =
-      document.getElementById(
-        "reviewHistory"
-      );
-
-    container.innerHTML = "";
-
-
-    const subjects =
-      historyData.reviewSubjects;
-
-
-    if (subjects.length === 0) {
-
-      const empty =
-        document.createElement(
-          "div"
-        );
-
-      empty.className =
-        "history-empty";
-
-      empty.textContent =
-        "No Review subjects yet.";
-
-      container.appendChild(
-        empty
-      );
-
-      return;
-
-    }
-
-
-    const dates =
-      getDates(historyData);
-
-
-    if (dates.length === 0) {
-
-      const empty =
-        document.createElement(
-          "div"
-        );
-
-      empty.className =
-        "history-empty";
-
-      empty.textContent =
-        "No history yet.";
-
-      container.appendChild(
-        empty
-      );
-
-      return;
-
-    }
-
-
-    const table =
-      createHistoryTable(
-        dates,
-        subjects,
-        "review",
-        historyData
-      );
-
-
-    container.appendChild(
-      table
-    );
-
-  }
-
-
-  /* =================================
-     COMMENT HISTORY
-  ================================= */
-
-  function renderCommentHistory(
-    historyData
-  ) {
-
-    const container =
-      document.getElementById(
-        "commentHistory"
-      );
-
-    container.innerHTML = "";
-
-
-    const dates =
-      getDates(historyData);
-
-
-    let hasComments = false;
-
-
-    dates.forEach(function (date) {
-
-      const record =
-        historyData.records[date];
-
-
-      if (
-        !record ||
-        typeof record.comment !==
-          "string" ||
-        record.comment.trim() === ""
-      ) {
-
-        return;
-
-      }
-
-
-      hasComments = true;
-
-
-      const item =
-        document.createElement(
-          "div"
-        );
-
-      item.className =
-        "comment-history-item";
-
-
-      const dateElement =
-        document.createElement(
-          "div"
-        );
-
-      dateElement.className =
-        "comment-history-date";
-
-      dateElement.textContent =
-        formatHistoryDate(date);
-
-
-      const text =
-        document.createElement(
-          "div"
-        );
-
-      text.className =
-        "comment-history-text";
-
-      text.textContent =
-        record.comment;
-
-
-      item.appendChild(
-        dateElement
-      );
-
-      item.appendChild(
-        text
-      );
-
-
-      container.appendChild(
-        item
-      );
-
-    });
-
-
-    if (!hasComments) {
-
-      const empty =
-        document.createElement(
-          "div"
-        );
-
-      empty.className =
-        "comment-history-empty";
-
-      empty.textContent =
-        "No comments yet.";
-
-      container.appendChild(
-        empty
-      );
-
-    }
-
-  }
-
-
-  /* =================================
-     RENDER ALL HISTORY
-  ================================= */
-
-  function renderHistory() {
-
-    const historyData =
-      loadHistoryData();
-
-
-    renderVocabHistory(
-      historyData
-    );
-
-
-    renderLangHistory(
-      historyData
-    );
-
-
-    renderReviewHistory(
-      historyData
-    );
-
-
-    renderCommentHistory(
-      historyData
-    );
-
-  }
-
-
-  /* =================================
-     OPEN HISTORY
-  ================================= */
-
-  openHistory.addEventListener(
-    "click",
-    function () {
-
-      renderHistory();
-
-      mainPage.style.display =
-        "none";
-
-      historyPage.style.display =
-        "block";
-
-      window.scrollTo(
-        0,
-        0
-      );
-
-    }
-  );
-
-
-  /* =================================
-     BACK TO MAIN
-  ================================= */
-
-  backToMain.addEventListener(
-    "click",
-    function () {
-
-      historyPage.style.display =
-        "none";
-
-      mainPage.style.display =
-        "block";
-
-      loadComment();
-
-      window.scrollTo(
-        0,
-        0
-      );
-
-    }
-  );
-
-
-  /* =================================
-     STORAGE UPDATE
-  ================================= */
-
-  window.addEventListener(
-    "storage",
-    function (event) {
-
-      if (
-        event.key === STORAGE_KEY
-      ) {
-
-        loadComment();
-
-
-        if (
-          historyPage.style.display !==
-          "none"
-        ) {
-
-          renderHistory();
+            window.scrollTo(
+                0,
+                0
+            );
 
         }
+    );
 
-      }
 
-    }
-  );
+
+    /* =================================================
+       STORAGE UPDATE
+    ================================================= */
+
+    window.addEventListener(
+        "storage",
+        function (event) {
+
+            if (
+                event.key ===
+                STORAGE_KEY
+            ) {
+
+                loadComment();
+
+
+                if (
+                    historyPage.style.display !==
+                    "none"
+                ) {
+
+                    renderHistory();
+
+                }
+
+            }
+
+        }
+    );
+
 
 })();
 
 </script>
+
 
 </body>
 </html>
