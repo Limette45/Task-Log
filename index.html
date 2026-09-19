@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Record</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <main class="app">
+
+        <div class="date-navigation">
+            <button id="prevDay">←</button>
+            <div id="dateDisplay"></div>
+            <button id="nextDay">→</button>
+        </div>
+
+        <section class="section">
+            <h2>Vocab</h2>
+
+            <label>
+                <input type="checkbox" class="fixed-check" data-category="vocab" data-item="espDATA">
+                espDATA
+            </label>
+
+            <label>
+                <input type="checkbox" class="fixed-check" data-category="vocab" data-item="engDATA">
+                engDATA
+            </label>
+
+            <label>
+                <input type="checkbox" class="fixed-check" data-category="vocab" data-item="engSVL">
+                engSVL
+            </label>
+
+            <label>
+                <input type="checkbox" class="fixed-check" data-category="vocab" data-item="deuDATA">
+                deuDATA
+            </label>
+
+            <label>
+                <input type="checkbox" class="fixed-check" data-category="vocab" data-item="espA1-2">
+                espA1-2
+            </label>
+        </section>
+
+
+        <section class="section">
+            <h2>Lang</h2>
+
+            <label>
+                <input type="checkbox" class="fixed-check" data-category="lang" data-item="engNews">
+                engNews
+            </label>
+
+            <label>
+                <input type="checkbox" class="fixed-check" data-category="lang" data-item="engLyrics">
+                engLyrics
+            </label>
+
+            <label>
+                <input type="checkbox" class="fixed-check" data-category="lang" data-item="espLyrics">
+                espLyrics
+            </label>
+        </section>
+
+
+        <section class="section">
+            <div class="section-header">
+                <h2>Review</h2>
+                <button id="addReview">+ Add</button>
+            </div>
+
+            <div id="reviewList"></div>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
