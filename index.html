@@ -1,613 +1,1123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Study Record</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- History page styles -->
-    <style>
-        #historyPage {
-            display: none;
-        }
+<title>Study Tracker</title>
 
-        .history-button-area {
-            text-align: center;
-            margin-top: 25px;
-        }
+<link rel="stylesheet" href="style.css">
 
-        #openHistory,
-        #backToMain {
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background: white;
-            padding: 9px 18px;
-            font-size: 15px;
-            cursor: pointer;
-        }
+<style>
+/* =========================
+   History
+========================= */
 
-        #openHistory:hover,
-        #backToMain:hover {
-            background: #eee;
-        }
+#historyPage {
+  display: none;
+}
 
-        .history-section {
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            padding: 18px;
-            margin-bottom: 20px;
-            overflow-x: auto;
-        }
+.history-section {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 18px;
+  margin-bottom: 20px;
+  overflow-x: auto;
+}
 
-        .history-section h2 {
-            margin: 0 0 15px;
-            font-size: 20px;
-        }
+.history-section h2 {
+  margin: 0 0 15px;
+  font-size: 20px;
+}
 
-        .history-table {
-            width: 100%;
-            border-collapse: collapse;
-            white-space: nowrap;
-        }
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 500px;
+}
 
-        .history-table th,
-        .history-table td {
-            border-bottom: 1px solid #eee;
-            padding: 9px 12px;
-            text-align: center;
-        }
+.history-table th,
+.history-table td {
+  border: 1px solid #ddd;
+  padding: 8px 10px;
+  text-align: center;
+  white-space: nowrap;
+}
 
-        .history-table th {
-            font-weight: bold;
-            background: #f7f7f7;
-        }
+.history-table th {
+  background: #f5f7fa;
+  font-weight: bold;
+}
 
-        .history-table th:first-child,
-        .history-table td:first-child {
-            text-align: left;
-        }
+.history-table td:first-child,
+.history-table th:first-child {
+  text-align: left;
+}
 
-        .history-check {
-            font-weight: bold;
-        }
+.history-empty {
+  color: #777;
+  padding: 5px 0;
+}
 
-        .history-empty {
-            color: #888;
-            padding: 5px 0;
-        }
-    </style>
+/* =========================
+   History button
+========================= */
+
+#openHistory,
+#backToMain {
+  border: 1px solid #ccc;
+  border-radius: 7px;
+  background: white;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#openHistory:hover,
+#backToMain:hover {
+  background: #eee;
+}
+
+/* =========================
+   Comment
+========================= */
+
+#dailyComment {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  resize: vertical;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+#dailyComment:disabled {
+  background: #f5f5f5;
+  color: #555;
+  cursor: default;
+}
+
+/* =========================
+   Comment History
+========================= */
+
+.comment-history {
+  margin-top: 20px;
+}
+
+.comment-history-item {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 10px;
+  background: #fafafa;
+}
+
+.comment-history-date {
+  font-weight: bold;
+  margin-bottom: 7px;
+}
+
+.comment-history-text {
+  white-space: pre-wrap;
+  line-height: 1.5;
+}
+
+.comment-history-empty {
+  color: #777;
+}
+</style>
+
 </head>
 
 <body>
 
-    <main class="app">
-
-        <!-- ========================= -->
-        <!-- Main Page                  -->
-        <!-- ========================= -->
-
-        <div id="mainPage">
-
-            <div class="date-navigation">
-                <button id="prevDay">←</button>
-                <div id="dateDisplay"></div>
-                <button id="nextDay">→</button>
-            </div>
-
-            <section class="section">
-                <h2>Vocab</h2>
-
-                <label>
-                    <input
-                        type="checkbox"
-                        class="fixed-check"
-                        data-category="vocab"
-                        data-item="espDATA"
-                    >
-                    espDATA
-                </label>
-
-                <label>
-                    <input
-                        type="checkbox"
-                        class="fixed-check"
-                        data-category="vocab"
-                        data-item="engDATA"
-                    >
-                    engDATA
-                </label>
-
-                <label>
-                    <input
-                        type="checkbox"
-                        class="fixed-check"
-                        data-category="vocab"
-                        data-item="engSVL"
-                    >
-                    engSVL
-                </label>
-
-                <label>
-                    <input
-                        type="checkbox"
-                        class="fixed-check"
-                        data-category="vocab"
-                        data-item="deuDATA"
-                    >
-                    deuDATA
-                </label>
-
-                <label>
-                    <input
-                        type="checkbox"
-                        class="fixed-check"
-                        data-category="vocab"
-                        data-item="espA1-2"
-                    >
-                    espA1-2
-                </label>
-            </section>
-
-
-            <section class="section">
-                <h2>Lang</h2>
-
-                <label>
-                    <input
-                        type="checkbox"
-                        class="fixed-check"
-                        data-category="lang"
-                        data-item="engNews"
-                    >
-                    engNews
-                </label>
-
-                <label>
-                    <input
-                        type="checkbox"
-                        class="fixed-check"
-                        data-category="lang"
-                        data-item="engLyrics"
-                    >
-                    engLyrics
-                </label>
-
-                <label>
-                    <input
-                        type="checkbox"
-                        class="fixed-check"
-                        data-category="lang"
-                        data-item="espLyrics"
-                    >
-                    espLyrics
-                </label>
-            </section>
+<div class="app">
+
+  <!-- =========================
+       MAIN PAGE
+  ========================== -->
+
+  <div id="mainPage">
+
+    <div class="date-navigation">
+      <button id="prevDay">←</button>
+
+      <div id="dateDisplay"></div>
+
+      <button id="nextDay">→</button>
+    </div>
+
+
+    <!-- =========================
+         Vocab
+    ========================== -->
+
+    <section class="section">
+      <h2>Vocab</h2>
+
+      <label>
+        <input
+          type="checkbox"
+          class="fixed-check"
+          data-category="vocab"
+          data-item="espDATA"
+        >
+        <span>espDATA</span>
+      </label>
+
+      <label>
+        <input
+          type="checkbox"
+          class="fixed-check"
+          data-category="vocab"
+          data-item="engDATA"
+        >
+        <span>engDATA</span>
+      </label>
+
+      <label>
+        <input
+          type="checkbox"
+          class="fixed-check"
+          data-category="vocab"
+          data-item="engSVL"
+        >
+        <span>engSVL</span>
+      </label>
+
+      <label>
+        <input
+          type="checkbox"
+          class="fixed-check"
+          data-category="vocab"
+          data-item="deuDATA"
+        >
+        <span>deuDATA</span>
+      </label>
+
+      <label>
+        <input
+          type="checkbox"
+          class="fixed-check"
+          data-category="vocab"
+          data-item="espA1-2"
+        >
+        <span>espA1-2</span>
+      </label>
+    </section>
+
+
+    <!-- =========================
+         Lang
+    ========================== -->
+
+    <section class="section">
+      <h2>Lang</h2>
+
+      <label>
+        <input
+          type="checkbox"
+          class="fixed-check"
+          data-category="lang"
+          data-item="engNews"
+        >
+        <span>engNews</span>
+      </label>
 
+      <label>
+        <input
+          type="checkbox"
+          class="fixed-check"
+          data-category="lang"
+          data-item="engLyrics"
+        >
+        <span>engLyrics</span>
+      </label>
 
-            <section class="section">
-                <div class="section-header">
-                    <h2>Review</h2>
-                    <button id="addReview">+ Add</button>
-                </div>
+      <label>
+        <input
+          type="checkbox"
+          class="fixed-check"
+          data-category="lang"
+          data-item="espLyrics"
+        >
+        <span>espLyrics</span>
+      </label>
+    </section>
 
-                <div id="reviewList"></div>
-            </section>
 
+    <!-- =========================
+         Review
+    ========================== -->
 
-            <!-- History button -->
-            <div class="history-button-area">
-                <button id="openHistory">History</button>
-            </div>
+    <section class="section">
 
-        </div>
+      <div class="section-header">
+        <h2>Review</h2>
+        <button id="addReview">＋ Add</button>
+      </div>
 
+      <div id="reviewList"></div>
 
-        <!-- ========================= -->
-        <!-- History Page               -->
-        <!-- ========================= -->
+    </section>
 
-        <div id="historyPage">
 
-            <div class="date-navigation">
-                <div id="historyTitle">History</div>
-            </div>
+    <!-- =========================
+         Comment
+    ========================== -->
 
+    <section class="section">
 
-            <!-- Vocab History -->
-            <section class="history-section">
-                <h2>Vocab</h2>
-                <div id="vocabHistory"></div>
-            </section>
+      <h2>Comment</h2>
 
+      <textarea
+        id="dailyComment"
+        placeholder="Write a comment for today..."
+        rows="5"
+      ></textarea>
 
-            <!-- Lang History -->
-            <section class="history-section">
-                <h2>Lang</h2>
-                <div id="langHistory"></div>
-            </section>
+    </section>
 
 
-            <!-- Review History -->
-            <section class="history-section">
-                <h2>Review</h2>
-                <div id="reviewHistory"></div>
-            </section>
+    <!-- =========================
+         History Button
+    ========================== -->
 
+    <section class="section">
 
-            <div class="history-button-area">
-                <button id="backToMain">Back</button>
-            </div>
+      <button id="openHistory">History</button>
 
-        </div>
+    </section>
 
-    </main>
+  </div>
 
 
-    <script src="script.js"></script>
+  <!-- =========================
+       HISTORY PAGE
+  ========================== -->
 
+  <div id="historyPage">
 
-    <!-- ================================================= -->
-    <!-- History functionality                             -->
-    <!-- This part is intentionally contained in HTML.     -->
-    <!-- ================================================= -->
+    <div class="date-navigation">
+      <div style="font-size:22px; font-weight:bold;">
+        History
+      </div>
 
-    <script>
-        const HISTORY_STORAGE_KEY = "studyRecordData";
+      <button id="backToMain">
+        Back
+      </button>
+    </div>
 
-        const HISTORY_VOCAB_ITEMS = [
-            "espDATA",
-            "engDATA",
-            "engSVL",
-            "deuDATA",
-            "espA1-2"
-        ];
 
-        const HISTORY_LANG_ITEMS = [
-            "engNews",
-            "engLyrics",
-            "espLyrics"
-        ];
+    <!-- =========================
+         Vocab History
+    ========================== -->
 
+    <section class="history-section">
 
-        const mainPage = document.getElementById("mainPage");
-        const historyPage = document.getElementById("historyPage");
+      <h2>Vocab History</h2>
 
-        const openHistoryButton =
-            document.getElementById("openHistory");
+      <div id="vocabHistory"></div>
 
-        const backToMainButton =
-            document.getElementById("backToMain");
+    </section>
 
 
-        function loadHistoryData() {
+    <!-- =========================
+         Lang History
+    ========================== -->
 
-            try {
+    <section class="history-section">
 
-                const saved =
-                    localStorage.getItem(HISTORY_STORAGE_KEY);
+      <h2>Lang History</h2>
 
-                if (!saved) {
-                    return {
-                        records: {},
-                        reviewSubjects: []
-                    };
-                }
+      <div id="langHistory"></div>
 
-                const parsed = JSON.parse(saved);
+    </section>
 
-                return {
-                    records: parsed.records || {},
-                    reviewSubjects: parsed.reviewSubjects || []
-                };
 
-            } catch (error) {
+    <!-- =========================
+         Review History
+    ========================== -->
 
-                console.error(
-                    "Failed to load history data:",
-                    error
-                );
+    <section class="history-section">
 
-                return {
-                    records: {},
-                    reviewSubjects: []
-                };
-            }
-        }
+      <h2>Review History</h2>
 
+      <div id="reviewHistory"></div>
 
-        function getSortedHistoryDates(records) {
+    </section>
 
-            return Object.keys(records)
-                .sort((a, b) => b.localeCompare(a));
-        }
 
+    <!-- =========================
+         Comment History
+    ========================== -->
 
-        function createHistoryTable(
-            dates,
-            subjects,
-            category
-        ) {
+    <section class="history-section">
 
-            if (subjects.length === 0) {
+      <h2>Comment History</h2>
 
-                const empty =
-                    document.createElement("div");
+      <div id="commentHistory"></div>
 
-                empty.className = "history-empty";
-                empty.textContent = "No subjects.";
+    </section>
 
-                return empty;
-            }
+  </div>
 
+</div>
 
-            const table =
-                document.createElement("table");
 
-            table.className = "history-table";
+<!-- =========================
+     Existing JavaScript
+========================== -->
 
+<script src="script.js"></script>
 
-            const thead =
-                document.createElement("thead");
 
-            const headerRow =
-                document.createElement("tr");
+<!-- =========================
+     Comment + History
+     HTML ONLY
+========================== -->
 
+<script>
 
-            const dateHeader =
-                document.createElement("th");
+(function () {
 
-            dateHeader.textContent = "Date";
+  const STORAGE_KEY = "studyRecordData";
 
-            headerRow.appendChild(dateHeader);
+  const vocabItems = [
+    "espDATA",
+    "engDATA",
+    "engSVL",
+    "deuDATA",
+    "espA1-2"
+  ];
 
+  const langItems = [
+    "engNews",
+    "engLyrics",
+    "espLyrics"
+  ];
 
-            subjects.forEach(subject => {
 
-                const th =
-                    document.createElement("th");
+  /* =================================
+     COMMENT
+  ================================= */
 
-                th.textContent = subject;
+  const commentBox =
+    document.getElementById("dailyComment");
 
-                headerRow.appendChild(th);
-            });
 
+  function loadComment() {
 
-            thead.appendChild(headerRow);
-            table.appendChild(thead);
+    if (!commentBox) return;
 
+    const record = data.records[currentDate];
 
-            const tbody =
-                document.createElement("tbody");
+    if (record && typeof record.comment === "string") {
+      commentBox.value = record.comment;
+    } else {
+      commentBox.value = "";
+    }
 
+    commentBox.disabled = !isToday();
+  }
 
-            dates.forEach(date => {
 
-                const row =
-                    document.createElement("tr");
+  commentBox.addEventListener("input", function () {
 
+    if (!isToday()) {
+      loadComment();
+      return;
+    }
 
-                const dateCell =
-                    document.createElement("td");
+    const record = getRecord(currentDate);
 
-                dateCell.textContent = date;
+    record.comment = commentBox.value;
 
-                row.appendChild(dateCell);
+    saveData();
 
+  });
 
-                subjects.forEach(subject => {
 
-                    const cell =
-                        document.createElement("td");
+  /*
+    The existing script's render() changes
+    the current date when ← / → is pressed.
 
-                    const record =
-                        dataForHistory.records[date];
+    Check for date changes and update Comment.
+  */
 
+  let lastCommentDate = currentDate;
 
-                    let checked = false;
 
+  setInterval(function () {
 
-                    if (
-                        record &&
-                        record[category] &&
-                        record[category][subject]
-                    ) {
-                        checked = true;
-                    }
+    if (currentDate !== lastCommentDate) {
 
+      lastCommentDate = currentDate;
 
-                    cell.textContent =
-                        checked ? "✓" : "—";
+      loadComment();
 
-                    cell.className =
-                        "history-check";
+    }
 
+    commentBox.disabled = !isToday();
 
-                    row.appendChild(cell);
-                });
+  }, 100);
 
 
-                tbody.appendChild(row);
-            });
+  loadComment();
 
 
-            table.appendChild(tbody);
+  /* =================================
+     HISTORY
+  ================================= */
 
-            return table;
-        }
+  const mainPage =
+    document.getElementById("mainPage");
 
+  const historyPage =
+    document.getElementById("historyPage");
 
-        function renderHistory() {
+  const openHistory =
+    document.getElementById("openHistory");
 
-            dataForHistory =
-                loadHistoryData();
+  const backToMain =
+    document.getElementById("backToMain");
 
 
-            const records =
-                dataForHistory.records;
+  function loadHistoryData() {
 
+    try {
 
-            const dates =
-                getSortedHistoryDates(records);
+      const saved =
+        localStorage.getItem(STORAGE_KEY);
 
+      if (!saved) {
 
-            /*
-             * Vocab
-             */
-            const vocabContainer =
-                document.getElementById(
-                    "vocabHistory"
-                );
-
-            vocabContainer.innerHTML = "";
-
-            if (dates.length === 0) {
-
-                vocabContainer.innerHTML =
-                    '<div class="history-empty">' +
-                    'No records yet.' +
-                    '</div>';
-
-            } else {
-
-                vocabContainer.appendChild(
-                    createHistoryTable(
-                        dates,
-                        HISTORY_VOCAB_ITEMS,
-                        "vocab"
-                    )
-                );
-            }
-
-
-            /*
-             * Lang
-             */
-            const langContainer =
-                document.getElementById(
-                    "langHistory"
-                );
-
-            langContainer.innerHTML = "";
-
-            if (dates.length === 0) {
-
-                langContainer.innerHTML =
-                    '<div class="history-empty">' +
-                    'No records yet.' +
-                    '</div>';
-
-            } else {
-
-                langContainer.appendChild(
-                    createHistoryTable(
-                        dates,
-                        HISTORY_LANG_ITEMS,
-                        "lang"
-                    )
-                );
-            }
-
-
-            /*
-             * Review
-             *
-             * Review subjects are read from
-             * localStorage, so subjects added
-             * later automatically appear here.
-             */
-            const reviewContainer =
-                document.getElementById(
-                    "reviewHistory"
-                );
-
-            reviewContainer.innerHTML = "";
-
-
-            const reviewSubjects =
-                dataForHistory.reviewSubjects;
-
-
-            if (
-                dates.length === 0 ||
-                reviewSubjects.length === 0
-            ) {
-
-                reviewContainer.innerHTML =
-                    '<div class="history-empty">' +
-                    'No records yet.' +
-                    '</div>';
-
-            } else {
-
-                reviewContainer.appendChild(
-                    createHistoryTable(
-                        dates,
-                        reviewSubjects,
-                        "review"
-                    )
-                );
-            }
-        }
-
-
-        let dataForHistory = {
-            records: {},
-            reviewSubjects: []
+        return {
+          records: {},
+          reviewSubjects: []
         };
 
+      }
+
+      const parsed =
+        JSON.parse(saved);
+
+      return {
+
+        records:
+          parsed.records || {},
+
+        reviewSubjects:
+          parsed.reviewSubjects || []
+
+      };
+
+    } catch (error) {
+
+      console.error(
+        "Failed to load history:",
+        error
+      );
+
+      return {
+        records: {},
+        reviewSubjects: []
+      };
+
+    }
+
+  }
+
+
+  function getDates(historyData) {
+
+    return Object.keys(
+      historyData.records
+    ).sort(function (a, b) {
+
+      return b.localeCompare(a);
+
+    });
+
+  }
+
+
+  function formatHistoryDate(dateString) {
+
+    const parts =
+      dateString.split("-");
+
+    return (
+      parts[1] +
+      "/" +
+      parts[2]
+    );
+
+  }
+
+
+  function hasCheckedItems(record) {
+
+    if (!record) return false;
+
+
+    if (
+      record.vocab &&
+      Object.values(record.vocab)
+        .some(Boolean)
+    ) {
+
+      return true;
+
+    }
+
+
+    if (
+      record.lang &&
+      Object.values(record.lang)
+        .some(Boolean)
+    ) {
+
+      return true;
+
+    }
+
+
+    if (
+      record.review &&
+      Object.values(record.review)
+        .some(Boolean)
+    ) {
+
+      return true;
+
+    }
+
+
+    if (
+      typeof record.comment === "string" &&
+      record.comment.trim() !== ""
+    ) {
+
+      return true;
+
+    }
+
+
+    return false;
+
+  }
+
+
+  function createHistoryTable(
+    dates,
+    items,
+    category,
+    historyData
+  ) {
+
+    const table =
+      document.createElement("table");
+
+    table.className =
+      "history-table";
+
+
+    const thead =
+      document.createElement("thead");
+
+    const headerRow =
+      document.createElement("tr");
+
+
+    const dateHeader =
+      document.createElement("th");
+
+    dateHeader.textContent =
+      "Date";
+
+    headerRow.appendChild(
+      dateHeader
+    );
+
+
+    items.forEach(function (item) {
+
+      const th =
+        document.createElement("th");
+
+      th.textContent = item;
+
+      headerRow.appendChild(th);
+
+    });
+
+
+    thead.appendChild(headerRow);
+
+    table.appendChild(thead);
+
+
+    const tbody =
+      document.createElement("tbody");
+
+
+    dates.forEach(function (date) {
+
+      const record =
+        historyData.records[date];
+
+      if (!record) return;
+
+
+      const row =
+        document.createElement("tr");
+
+
+      const dateCell =
+        document.createElement("td");
+
+      dateCell.textContent =
+        formatHistoryDate(date);
+
+      row.appendChild(dateCell);
+
+
+      items.forEach(function (
+        item,
+        index
+      ) {
+
+        const cell =
+          document.createElement("td");
+
+
+        let checked = false;
+
+
+        if (
+          category === "vocab" ||
+          category === "lang"
+        ) {
+
+          checked =
+            Boolean(
+              record[category] &&
+              record[category][item]
+            );
+
+        }
+
 
         /*
-         * Open History
-         */
-        openHistoryButton.addEventListener(
-            "click",
-            () => {
+          Review is stored by numeric index
+          in the existing script.js.
+        */
 
-                renderHistory();
+        if (category === "review") {
 
-                mainPage.style.display = "none";
-                historyPage.style.display = "block";
+          checked =
+            Boolean(
+              record.review &&
+              record.review[index]
+            );
 
-                window.scrollTo(0, 0);
-            }
-        );
-
-
-        /*
-         * Back to Main
-         */
-        backToMainButton.addEventListener(
-            "click",
-            () => {
-
-                historyPage.style.display = "none";
-                mainPage.style.display = "block";
-
-                window.scrollTo(0, 0);
-            }
-        );
+        }
 
 
-        /*
-         * If another tab/window changes
-         * localStorage while History is open,
-         * refresh the history automatically.
-         */
-        window.addEventListener(
-            "storage",
-            event => {
+        cell.textContent =
+          checked ? "✓" : "—";
 
-                if (
-                    event.key === HISTORY_STORAGE_KEY &&
-                    historyPage.style.display !== "none"
-                ) {
-                    renderHistory();
-                }
-            }
-        );
-    </script>
+
+        row.appendChild(cell);
+
+      });
+
+
+      tbody.appendChild(row);
+
+    });
+
+
+    table.appendChild(tbody);
+
+    return table;
+
+  }
+
+
+  function renderVocabHistory(
+    historyData
+  ) {
+
+    const container =
+      document.getElementById(
+        "vocabHistory"
+      );
+
+    container.innerHTML = "";
+
+
+    const dates =
+      getDates(historyData);
+
+
+    if (dates.length === 0) {
+
+      const empty =
+        document.createElement("div");
+
+      empty.className =
+        "history-empty";
+
+      empty.textContent =
+        "No history yet.";
+
+      container.appendChild(empty);
+
+      return;
+
+    }
+
+
+    const table =
+      createHistoryTable(
+        dates,
+        vocabItems,
+        "vocab",
+        historyData
+      );
+
+
+    container.appendChild(table);
+
+  }
+
+
+  function renderLangHistory(
+    historyData
+  ) {
+
+    const container =
+      document.getElementById(
+        "langHistory"
+      );
+
+    container.innerHTML = "";
+
+
+    const dates =
+      getDates(historyData);
+
+
+    if (dates.length === 0) {
+
+      const empty =
+        document.createElement("div");
+
+      empty.className =
+        "history-empty";
+
+      empty.textContent =
+        "No history yet.";
+
+      container.appendChild(empty);
+
+      return;
+
+    }
+
+
+    const table =
+      createHistoryTable(
+        dates,
+        langItems,
+        "lang",
+        historyData
+      );
+
+
+    container.appendChild(table);
+
+  }
+
+
+  function renderReviewHistory(
+    historyData
+  ) {
+
+    const container =
+      document.getElementById(
+        "reviewHistory"
+      );
+
+    container.innerHTML = "";
+
+
+    const subjects =
+      historyData.reviewSubjects;
+
+
+    if (subjects.length === 0) {
+
+      const empty =
+        document.createElement("div");
+
+      empty.className =
+        "history-empty";
+
+      empty.textContent =
+        "No Review subjects yet.";
+
+      container.appendChild(empty);
+
+      return;
+
+    }
+
+
+    const dates =
+      getDates(historyData);
+
+
+    if (dates.length === 0) {
+
+      const empty =
+        document.createElement("div");
+
+      empty.className =
+        "history-empty";
+
+      empty.textContent =
+        "No history yet.";
+
+      container.appendChild(empty);
+
+      return;
+
+    }
+
+
+    const table =
+      createHistoryTable(
+        dates,
+        subjects,
+        "review",
+        historyData
+      );
+
+
+    container.appendChild(table);
+
+  }
+
+
+  function renderCommentHistory(
+    historyData
+  ) {
+
+    const container =
+      document.getElementById(
+        "commentHistory"
+      );
+
+    container.innerHTML = "";
+
+
+    const dates =
+      getDates(historyData);
+
+
+    let hasComments = false;
+
+
+    dates.forEach(function (date) {
+
+      const record =
+        historyData.records[date];
+
+
+      if (
+        !record ||
+        typeof record.comment !== "string" ||
+        record.comment.trim() === ""
+      ) {
+
+        return;
+
+      }
+
+
+      hasComments = true;
+
+
+      const item =
+        document.createElement("div");
+
+      item.className =
+        "comment-history-item";
+
+
+      const dateElement =
+        document.createElement("div");
+
+      dateElement.className =
+        "comment-history-date";
+
+      dateElement.textContent =
+        formatHistoryDate(date);
+
+
+      const text =
+        document.createElement("div");
+
+      text.className =
+        "comment-history-text";
+
+      text.textContent =
+        record.comment;
+
+
+      item.appendChild(
+        dateElement
+      );
+
+      item.appendChild(text);
+
+
+      container.appendChild(item);
+
+    });
+
+
+    if (!hasComments) {
+
+      const empty =
+        document.createElement("div");
+
+      empty.className =
+        "comment-history-empty";
+
+      empty.textContent =
+        "No comments yet.";
+
+      container.appendChild(empty);
+
+    }
+
+  }
+
+
+  function renderHistory() {
+
+    const historyData =
+      loadHistoryData();
+
+
+    renderVocabHistory(
+      historyData
+    );
+
+
+    renderLangHistory(
+      historyData
+    );
+
+
+    renderReviewHistory(
+      historyData
+    );
+
+
+    renderCommentHistory(
+      historyData
+    );
+
+  }
+
+
+  /* =================================
+     OPEN / CLOSE HISTORY
+  ================================= */
+
+  openHistory.addEventListener(
+    "click",
+    function () {
+
+      renderHistory();
+
+      mainPage.style.display =
+        "none";
+
+      historyPage.style.display =
+        "block";
+
+      window.scrollTo(
+        0,
+        0
+      );
+
+    }
+  );
+
+
+  backToMain.addEventListener(
+    "click",
+    function () {
+
+      historyPage.style.display =
+        "none";
+
+      mainPage.style.display =
+        "block";
+
+      loadComment();
+
+      window.scrollTo(
+        0,
+        0
+      );
+
+    }
+  );
+
+
+  /* =================================
+     UPDATE HISTORY IF ANOTHER TAB
+     CHANGES THE DATA
+  ================================= */
+
+  window.addEventListener(
+    "storage",
+    function (event) {
+
+      if (
+        event.key === STORAGE_KEY &&
+        historyPage.style.display !== "none"
+      ) {
+
+        renderHistory();
+
+      }
+
+      if (
+        event.key === STORAGE_KEY
+      ) {
+
+        loadComment();
+
+      }
+
+    }
+  );
+
+
+})();
+</script>
 
 </body>
 </html>
