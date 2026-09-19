@@ -61,7 +61,7 @@
 }
 
 /* =========================
-   History button
+   History buttons
 ========================= */
 
 #openHistory,
@@ -104,10 +104,6 @@
    Comment History
 ========================= */
 
-.comment-history {
-  margin-top: 20px;
-}
-
 .comment-history-item {
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -143,13 +139,34 @@
 
   <div id="mainPage">
 
+    <!-- Date Navigation -->
+
     <div class="date-navigation">
+
       <button id="prevDay">←</button>
 
       <div id="dateDisplay"></div>
 
       <button id="nextDay">→</button>
+
     </div>
+
+
+    <!-- =========================
+         Comment
+    ========================== -->
+
+    <section class="section">
+
+      <h2>Comment</h2>
+
+      <textarea
+        id="dailyComment"
+        placeholder="Write a comment for today..."
+        rows="5"
+      ></textarea>
+
+    </section>
 
 
     <!-- =========================
@@ -157,6 +174,7 @@
     ========================== -->
 
     <section class="section">
+
       <h2>Vocab</h2>
 
       <label>
@@ -208,6 +226,7 @@
         >
         <span>espA1-2</span>
       </label>
+
     </section>
 
 
@@ -216,6 +235,7 @@
     ========================== -->
 
     <section class="section">
+
       <h2>Lang</h2>
 
       <label>
@@ -247,6 +267,7 @@
         >
         <span>espLyrics</span>
       </label>
+
     </section>
 
 
@@ -257,28 +278,16 @@
     <section class="section">
 
       <div class="section-header">
+
         <h2>Review</h2>
-        <button id="addReview">＋ Add</button>
+
+        <button id="addReview">
+          ＋ Add
+        </button>
+
       </div>
 
       <div id="reviewList"></div>
-
-    </section>
-
-
-    <!-- =========================
-         Comment
-    ========================== -->
-
-    <section class="section">
-
-      <h2>Comment</h2>
-
-      <textarea
-        id="dailyComment"
-        placeholder="Write a comment for today..."
-        rows="5"
-      ></textarea>
 
     </section>
 
@@ -289,7 +298,9 @@
 
     <section class="section">
 
-      <button id="openHistory">History</button>
+      <button id="openHistory">
+        History
+      </button>
 
     </section>
 
@@ -303,6 +314,7 @@
   <div id="historyPage">
 
     <div class="date-navigation">
+
       <div style="font-size:22px; font-weight:bold;">
         History
       </div>
@@ -310,6 +322,7 @@
       <button id="backToMain">
         Back
       </button>
+
     </div>
 
 
@@ -378,7 +391,6 @@
 
 <!-- =========================
      Comment + History
-     HTML ONLY
 ========================== -->
 
 <script>
@@ -414,55 +426,78 @@
 
     if (!commentBox) return;
 
-    const record = data.records[currentDate];
+    const record =
+      data.records[currentDate];
 
-    if (record && typeof record.comment === "string") {
-      commentBox.value = record.comment;
+    if (
+      record &&
+      typeof record.comment === "string"
+    ) {
+
+      commentBox.value =
+        record.comment;
+
     } else {
+
       commentBox.value = "";
+
     }
 
-    commentBox.disabled = !isToday();
+    commentBox.disabled =
+      !isToday();
+
   }
 
 
-  commentBox.addEventListener("input", function () {
+  commentBox.addEventListener(
+    "input",
+    function () {
 
-    if (!isToday()) {
-      loadComment();
-      return;
+      if (!isToday()) {
+
+        loadComment();
+
+        return;
+
+      }
+
+      const record =
+        getRecord(currentDate);
+
+      record.comment =
+        commentBox.value;
+
+      saveData();
+
     }
-
-    const record = getRecord(currentDate);
-
-    record.comment = commentBox.value;
-
-    saveData();
-
-  });
+  );
 
 
   /*
-    The existing script's render() changes
-    the current date when ← / → is pressed.
-
-    Check for date changes and update Comment.
+    Detect date changes made by
+    the existing script.js.
   */
 
-  let lastCommentDate = currentDate;
+  let lastCommentDate =
+    currentDate;
 
 
   setInterval(function () {
 
-    if (currentDate !== lastCommentDate) {
+    if (
+      currentDate !==
+      lastCommentDate
+    ) {
 
-      lastCommentDate = currentDate;
+      lastCommentDate =
+        currentDate;
 
       loadComment();
 
     }
 
-    commentBox.disabled = !isToday();
+    commentBox.disabled =
+      !isToday();
 
   }, 100);
 
@@ -475,16 +510,24 @@
   ================================= */
 
   const mainPage =
-    document.getElementById("mainPage");
+    document.getElementById(
+      "mainPage"
+    );
 
   const historyPage =
-    document.getElementById("historyPage");
+    document.getElementById(
+      "historyPage"
+    );
 
   const openHistory =
-    document.getElementById("openHistory");
+    document.getElementById(
+      "openHistory"
+    );
 
   const backToMain =
-    document.getElementById("backToMain");
+    document.getElementById(
+      "backToMain"
+    );
 
 
   function loadHistoryData() {
@@ -492,7 +535,9 @@
     try {
 
       const saved =
-        localStorage.getItem(STORAGE_KEY);
+        localStorage.getItem(
+          STORAGE_KEY
+        );
 
       if (!saved) {
 
@@ -546,7 +591,9 @@
   }
 
 
-  function formatHistoryDate(dateString) {
+  function formatHistoryDate(
+    dateString
+  ) {
 
     const parts =
       dateString.split("-");
@@ -560,58 +607,9 @@
   }
 
 
-  function hasCheckedItems(record) {
-
-    if (!record) return false;
-
-
-    if (
-      record.vocab &&
-      Object.values(record.vocab)
-        .some(Boolean)
-    ) {
-
-      return true;
-
-    }
-
-
-    if (
-      record.lang &&
-      Object.values(record.lang)
-        .some(Boolean)
-    ) {
-
-      return true;
-
-    }
-
-
-    if (
-      record.review &&
-      Object.values(record.review)
-        .some(Boolean)
-    ) {
-
-      return true;
-
-    }
-
-
-    if (
-      typeof record.comment === "string" &&
-      record.comment.trim() !== ""
-    ) {
-
-      return true;
-
-    }
-
-
-    return false;
-
-  }
-
+  /* =================================
+     CREATE HISTORY TABLE
+  ================================= */
 
   function createHistoryTable(
     dates,
@@ -621,21 +619,29 @@
   ) {
 
     const table =
-      document.createElement("table");
+      document.createElement(
+        "table"
+      );
 
     table.className =
       "history-table";
 
 
     const thead =
-      document.createElement("thead");
+      document.createElement(
+        "thead"
+      );
 
     const headerRow =
-      document.createElement("tr");
+      document.createElement(
+        "tr"
+      );
 
 
     const dateHeader =
-      document.createElement("th");
+      document.createElement(
+        "th"
+      );
 
     dateHeader.textContent =
       "Date";
@@ -648,22 +654,31 @@
     items.forEach(function (item) {
 
       const th =
-        document.createElement("th");
+        document.createElement(
+          "th"
+        );
 
-      th.textContent = item;
+      th.textContent =
+        item;
 
       headerRow.appendChild(th);
 
     });
 
 
-    thead.appendChild(headerRow);
+    thead.appendChild(
+      headerRow
+    );
 
-    table.appendChild(thead);
+    table.appendChild(
+      thead
+    );
 
 
     const tbody =
-      document.createElement("tbody");
+      document.createElement(
+        "tbody"
+      );
 
 
     dates.forEach(function (date) {
@@ -675,16 +690,22 @@
 
 
       const row =
-        document.createElement("tr");
+        document.createElement(
+          "tr"
+        );
 
 
       const dateCell =
-        document.createElement("td");
+        document.createElement(
+          "td"
+        );
 
       dateCell.textContent =
         formatHistoryDate(date);
 
-      row.appendChild(dateCell);
+      row.appendChild(
+        dateCell
+      );
 
 
       items.forEach(function (
@@ -693,7 +714,9 @@
       ) {
 
         const cell =
-          document.createElement("td");
+          document.createElement(
+            "td"
+          );
 
 
         let checked = false;
@@ -714,11 +737,13 @@
 
 
         /*
-          Review is stored by numeric index
-          in the existing script.js.
+          Review data in script.js
+          is stored by numeric index.
         */
 
-        if (category === "review") {
+        if (
+          category === "review"
+        ) {
 
           checked =
             Boolean(
@@ -733,22 +758,33 @@
           checked ? "✓" : "—";
 
 
-        row.appendChild(cell);
+        row.appendChild(
+          cell
+        );
 
       });
 
 
-      tbody.appendChild(row);
+      tbody.appendChild(
+        row
+      );
 
     });
 
 
-    table.appendChild(tbody);
+    table.appendChild(
+      tbody
+    );
+
 
     return table;
 
   }
 
+
+  /* =================================
+     VOCAB HISTORY
+  ================================= */
 
   function renderVocabHistory(
     historyData
@@ -769,7 +805,9 @@
     if (dates.length === 0) {
 
       const empty =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       empty.className =
         "history-empty";
@@ -777,7 +815,9 @@
       empty.textContent =
         "No history yet.";
 
-      container.appendChild(empty);
+      container.appendChild(
+        empty
+      );
 
       return;
 
@@ -793,10 +833,16 @@
       );
 
 
-    container.appendChild(table);
+    container.appendChild(
+      table
+    );
 
   }
 
+
+  /* =================================
+     LANG HISTORY
+  ================================= */
 
   function renderLangHistory(
     historyData
@@ -817,7 +863,9 @@
     if (dates.length === 0) {
 
       const empty =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       empty.className =
         "history-empty";
@@ -825,7 +873,9 @@
       empty.textContent =
         "No history yet.";
 
-      container.appendChild(empty);
+      container.appendChild(
+        empty
+      );
 
       return;
 
@@ -841,10 +891,16 @@
       );
 
 
-    container.appendChild(table);
+    container.appendChild(
+      table
+    );
 
   }
 
+
+  /* =================================
+     REVIEW HISTORY
+  ================================= */
 
   function renderReviewHistory(
     historyData
@@ -865,7 +921,9 @@
     if (subjects.length === 0) {
 
       const empty =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       empty.className =
         "history-empty";
@@ -873,7 +931,9 @@
       empty.textContent =
         "No Review subjects yet.";
 
-      container.appendChild(empty);
+      container.appendChild(
+        empty
+      );
 
       return;
 
@@ -887,7 +947,9 @@
     if (dates.length === 0) {
 
       const empty =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       empty.className =
         "history-empty";
@@ -895,7 +957,9 @@
       empty.textContent =
         "No history yet.";
 
-      container.appendChild(empty);
+      container.appendChild(
+        empty
+      );
 
       return;
 
@@ -911,10 +975,16 @@
       );
 
 
-    container.appendChild(table);
+    container.appendChild(
+      table
+    );
 
   }
 
+
+  /* =================================
+     COMMENT HISTORY
+  ================================= */
 
   function renderCommentHistory(
     historyData
@@ -943,7 +1013,8 @@
 
       if (
         !record ||
-        typeof record.comment !== "string" ||
+        typeof record.comment !==
+          "string" ||
         record.comment.trim() === ""
       ) {
 
@@ -956,14 +1027,18 @@
 
 
       const item =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       item.className =
         "comment-history-item";
 
 
       const dateElement =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       dateElement.className =
         "comment-history-date";
@@ -973,7 +1048,9 @@
 
 
       const text =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       text.className =
         "comment-history-text";
@@ -986,10 +1063,14 @@
         dateElement
       );
 
-      item.appendChild(text);
+      item.appendChild(
+        text
+      );
 
 
-      container.appendChild(item);
+      container.appendChild(
+        item
+      );
 
     });
 
@@ -997,7 +1078,9 @@
     if (!hasComments) {
 
       const empty =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       empty.className =
         "comment-history-empty";
@@ -1005,12 +1088,18 @@
       empty.textContent =
         "No comments yet.";
 
-      container.appendChild(empty);
+      container.appendChild(
+        empty
+      );
 
     }
 
   }
 
+
+  /* =================================
+     RENDER ALL HISTORY
+  ================================= */
 
   function renderHistory() {
 
@@ -1041,7 +1130,7 @@
 
 
   /* =================================
-     OPEN / CLOSE HISTORY
+     OPEN HISTORY
   ================================= */
 
   openHistory.addEventListener(
@@ -1065,6 +1154,10 @@
   );
 
 
+  /* =================================
+     BACK TO MAIN
+  ================================= */
+
   backToMain.addEventListener(
     "click",
     function () {
@@ -1087,8 +1180,7 @@
 
 
   /* =================================
-     UPDATE HISTORY IF ANOTHER TAB
-     CHANGES THE DATA
+     STORAGE UPDATE
   ================================= */
 
   window.addEventListener(
@@ -1096,27 +1188,28 @@
     function (event) {
 
       if (
-        event.key === STORAGE_KEY &&
-        historyPage.style.display !== "none"
-      ) {
-
-        renderHistory();
-
-      }
-
-      if (
         event.key === STORAGE_KEY
       ) {
 
         loadComment();
+
+
+        if (
+          historyPage.style.display !==
+          "none"
+        ) {
+
+          renderHistory();
+
+        }
 
       }
 
     }
   );
 
-
 })();
+
 </script>
 
 </body>
