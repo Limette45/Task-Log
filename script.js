@@ -1,149 +1,262 @@
 const STORAGE_KEY = "studyRecordData";
 
-const vocabItems = [
-    "espDATA",
-    "engDATA",
-    "engSVL",
-    "deuDATA",
-    "espA1-2"
-];
-
-const langItems = [
-    "engNews",
-    "engLyrics",
-    "espLyrics"
-];
 
 let data = loadData();
-let currentDate = getTodayString();
+
+let currentDate =
+    getTodayString();
+
 
 function getTodayString() {
-    const now = new Date();
 
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-    const day = String(now.getDate()).padStart(2, "0");
+    const now =
+        new Date();
+
+    const year =
+        now.getFullYear();
+
+    const month =
+        String(now.getMonth() + 1)
+            .padStart(2, "0");
+
+    const day =
+        String(now.getDate())
+            .padStart(2, "0");
 
     return `${year}-${month}-${day}`;
 }
 
+
 function loadData() {
+
     try {
-        const saved = localStorage.getItem(STORAGE_KEY);
+
+        const saved =
+            localStorage.getItem(
+                STORAGE_KEY
+            );
+
 
         if (!saved) {
+
             return {
                 records: {},
                 reviewSubjects: []
             };
+
         }
 
-        const parsed = JSON.parse(saved);
+
+        const parsed =
+            JSON.parse(saved);
+
 
         return {
-            records: parsed.records || {},
-            reviewSubjects: parsed.reviewSubjects || []
+
+            records:
+                parsed.records || {},
+
+            reviewSubjects:
+                parsed.reviewSubjects || []
+
         };
 
     } catch (error) {
-        console.error("Failed to load data:", error);
+
+        console.error(
+            "Failed to load data:",
+            error
+        );
+
 
         return {
             records: {},
             reviewSubjects: []
         };
+
     }
+
 }
 
+
 function saveData() {
+
     localStorage.setItem(
         STORAGE_KEY,
         JSON.stringify(data)
     );
+
 }
 
-function getTodayDateObject() {
-    const today = new Date();
 
-    today.setHours(0, 0, 0, 0);
+function getTodayDateObject() {
+
+    const today =
+        new Date();
+
+    today.setHours(
+        0,
+        0,
+        0,
+        0
+    );
 
     return today;
 }
 
+
 function dateToObject(dateString) {
-    const [year, month, day] =
-        dateString.split("-").map(Number);
+
+    const [
+        year,
+        month,
+        day
+    ] =
+        dateString
+            .split("-")
+            .map(Number);
+
 
     const date =
-        new Date(year, month - 1, day);
+        new Date(
+            year,
+            month - 1,
+            day
+        );
 
-    date.setHours(0, 0, 0, 0);
+
+    date.setHours(
+        0,
+        0,
+        0,
+        0
+    );
+
 
     return date;
 }
 
-function compareDates(dateA, dateB) {
-    const a = dateToObject(dateA);
-    const b = dateToObject(dateB);
 
-    if (a < b) return -1;
-    if (a > b) return 1;
+function compareDates(
+    dateA,
+    dateB
+) {
+
+    const a =
+        dateToObject(dateA);
+
+    const b =
+        dateToObject(dateB);
+
+
+    if (a < b) {
+        return -1;
+    }
+
+    if (a > b) {
+        return 1;
+    }
 
     return 0;
 }
 
+
 function isToday() {
-    return currentDate === getTodayString();
+
+    return (
+        currentDate ===
+        getTodayString()
+    );
+
 }
+
 
 function getRecord(date) {
 
     if (!data.records[date]) {
 
         data.records[date] = {
+
             vocab: {},
+
             lang: {},
+
             review: {}
+
         };
+
     }
 
-    if (!data.records[date].vocab) {
-        data.records[date].vocab = {};
+
+    if (
+        !data.records[date].vocab
+    ) {
+
+        data.records[date].vocab =
+            {};
+
     }
 
-    if (!data.records[date].lang) {
-        data.records[date].lang = {};
+
+    if (
+        !data.records[date].lang
+    ) {
+
+        data.records[date].lang =
+            {};
+
     }
 
-    if (!data.records[date].review) {
-        data.records[date].review = {};
+
+    if (
+        !data.records[date].review
+    ) {
+
+        data.records[date].review =
+            {};
+
     }
+
 
     return data.records[date];
+
 }
 
-function formatDate(dateString) {
+
+function formatDate(
+    dateString
+) {
 
     const date =
-        dateToObject(dateString);
+        dateToObject(
+            dateString
+        );
+
 
     const year =
         date.getFullYear();
 
+
     const month =
-        String(date.getMonth() + 1)
-            .padStart(2, "0");
+        String(
+            date.getMonth() + 1
+        ).padStart(2, "0");
+
 
     const day =
-        String(date.getDate())
-            .padStart(2, "0");
+        String(
+            date.getDate()
+        ).padStart(2, "0");
+
 
     return `${year}-${month}-${day}`;
+
 }
 
 
 /* =========================================
    HISTORY DATE RANGE
+
    Current date ± 5 days
 ========================================= */
 
@@ -151,31 +264,52 @@ function getHistoryDates() {
 
     const dates = [];
 
-    const centerDate =
-        dateToObject(currentDate);
 
-    for (let i = -5; i <= 5; i++) {
+    const centerDate =
+        dateToObject(
+            currentDate
+        );
+
+
+    for (
+        let i = -5;
+        i <= 5;
+        i++
+    ) {
 
         const date =
-            new Date(centerDate);
+            new Date(
+                centerDate
+            );
+
 
         date.setDate(
             date.getDate() + i
         );
 
+
         dates.push(
             dateToString(date)
         );
+
     }
+
 
     /*
      * Newest date first
      */
-    dates.sort(function (a, b) {
-        return b.localeCompare(a);
-    });
+
+    dates.sort(
+        function (a, b) {
+
+            return b.localeCompare(a);
+
+        }
+    );
+
 
     return dates;
+
 }
 
 
@@ -188,10 +322,16 @@ function render() {
     document.getElementById(
         "dateDisplay"
     ).textContent =
-        formatDate(currentDate);
+        formatDate(
+            currentDate
+        );
+
 
     const record =
-        getRecord(currentDate);
+        getRecord(
+            currentDate
+        );
+
 
     renderFixedChecks(
         document.querySelectorAll(
@@ -200,73 +340,106 @@ function render() {
         record
     );
 
-    renderReview(record);
+
+    renderReview(
+        record
+    );
+
 
     updateEditability();
 
+
     saveData();
+
 }
+
 
 function renderFixedChecks(
     elements,
     record
 ) {
 
-    elements.forEach(input => {
+    elements.forEach(
+        input => {
 
-        const category =
-            input.dataset.category;
+            const category =
+                input.dataset.category;
 
-        const item =
-            input.dataset.item;
 
-        input.checked =
-            Boolean(
-                record[category][item]
-            );
-    });
+            const item =
+                input.dataset.item;
+
+
+            input.checked =
+                Boolean(
+                    record[
+                        category
+                    ][
+                        item
+                    ]
+                );
+
+        }
+    );
+
 }
 
-function renderReview(record) {
+
+function renderReview(
+    record
+) {
 
     const container =
         document.getElementById(
             "reviewList"
         );
 
-    container.innerHTML = "";
+
+    container.innerHTML =
+        "";
+
 
     data.reviewSubjects.forEach(
-        (subject, index) => {
+        (
+            subject,
+            index
+        ) => {
 
             const wrapper =
                 document.createElement(
                     "div"
                 );
 
+
             wrapper.className =
                 "review-item";
+
 
             const label =
                 document.createElement(
                     "label"
                 );
 
+
             const checkbox =
                 document.createElement(
                     "input"
                 );
 
+
             checkbox.type =
                 "checkbox";
+
 
             checkbox.checked =
                 Boolean(
                     record.review[index]
                 );
 
+
             checkbox.dataset.reviewIndex =
                 index;
+
 
             checkbox.addEventListener(
                 "change",
@@ -280,88 +453,115 @@ function renderReview(record) {
                             );
 
                         return;
+
                     }
+
 
                     record.review[index] =
                         checkbox.checked;
 
+
                     saveData();
+
                 }
             );
+
 
             const text =
                 document.createElement(
                     "span"
                 );
 
+
             text.textContent =
                 subject;
+
 
             label.appendChild(
                 checkbox
             );
 
+
             label.appendChild(
                 text
             );
+
 
             const deleteButton =
                 document.createElement(
                     "button"
                 );
 
+
             deleteButton.className =
                 "delete-review";
+
 
             deleteButton.textContent =
                 "×";
 
+
             deleteButton.title =
                 "Delete subject";
+
 
             deleteButton.addEventListener(
                 "click",
                 () => {
+
                     deleteReviewSubject(
                         index
                     );
+
                 }
             );
+
 
             wrapper.appendChild(
                 label
             );
 
+
             wrapper.appendChild(
                 deleteButton
             );
 
+
             container.appendChild(
                 wrapper
             );
+
         }
     );
+
 }
+
 
 function updateEditability() {
 
     const editable =
         isToday();
 
+
     document
         .querySelectorAll(
             ".fixed-check"
         )
-        .forEach(input => {
+        .forEach(
+            input => {
 
-            input.disabled =
-                !editable;
-        });
+                input.disabled =
+                    !editable;
+
+            }
+        );
+
 
     const addButton =
         document.getElementById(
             "addReview"
         );
+
 
     /*
      * Review subjects themselves can be
@@ -369,36 +569,48 @@ function updateEditability() {
      * daily check status.
      */
 
-    addButton.disabled = false;
+    addButton.disabled =
+        false;
+
 
     document
         .querySelectorAll(
             ".delete-review"
         )
-        .forEach(button => {
+        .forEach(
+            button => {
 
-            button.disabled = false;
-        });
+                button.disabled =
+                    false;
+
+            }
+        );
+
 
     document
         .querySelectorAll(
             ".section"
         )
-        .forEach(section => {
+        .forEach(
+            section => {
 
-            if (editable) {
+                if (editable) {
 
-                section.classList.remove(
-                    "read-only"
-                );
+                    section.classList.remove(
+                        "read-only"
+                    );
 
-            } else {
+                } else {
 
-                section.classList.add(
-                    "read-only"
-                );
+                    section.classList.add(
+                        "read-only"
+                    );
+
+                }
+
             }
-        });
+        );
+
 }
 
 
@@ -410,37 +622,51 @@ document
     .querySelectorAll(
         ".fixed-check"
     )
-    .forEach(input => {
+    .forEach(
+        input => {
 
-        input.addEventListener(
-            "change",
-            () => {
+            input.addEventListener(
+                "change",
+                () => {
 
-                if (!isToday()) {
+                    if (!isToday()) {
 
-                    render();
+                        render();
 
-                    return;
+                        return;
+
+                    }
+
+
+                    const record =
+                        getRecord(
+                            currentDate
+                        );
+
+
+                    const category =
+                        input.dataset.category;
+
+
+                    const item =
+                        input.dataset.item;
+
+
+                    record[
+                        category
+                    ][
+                        item
+                    ] =
+                        input.checked;
+
+
+                    saveData();
+
                 }
+            );
 
-                const record =
-                    getRecord(
-                        currentDate
-                    );
-
-                const category =
-                    input.dataset.category;
-
-                const item =
-                    input.dataset.item;
-
-                record[category][item] =
-                    input.checked;
-
-                saveData();
-            }
-        );
-    });
+        }
+    );
 
 
 /* =========================================
@@ -448,7 +674,9 @@ document
 ========================================= */
 
 document
-    .getElementById("prevDay")
+    .getElementById(
+        "prevDay"
+    )
     .addEventListener(
         "click",
         () => {
@@ -458,14 +686,20 @@ document
                     currentDate
                 );
 
+
             date.setDate(
                 date.getDate() - 1
             );
 
+
             currentDate =
-                dateToString(date);
+                dateToString(
+                    date
+                );
+
 
             render();
+
         }
     );
 
@@ -475,7 +709,9 @@ document
 ========================================= */
 
 document
-    .getElementById("nextDay")
+    .getElementById(
+        "nextDay"
+    )
     .addEventListener(
         "click",
         () => {
@@ -485,14 +721,20 @@ document
                     currentDate
                 );
 
+
             date.setDate(
                 date.getDate() + 1
             );
 
+
             currentDate =
-                dateToString(date);
+                dateToString(
+                    date
+                );
+
 
             render();
+
         }
     );
 
@@ -501,22 +743,34 @@ document
    DATE TO STRING
 ========================================= */
 
-function dateToString(date) {
+function dateToString(
+    date
+) {
 
     const year =
         date.getFullYear();
 
+
     const month =
         String(
             date.getMonth() + 1
-        ).padStart(2, "0");
+        ).padStart(
+            2,
+            "0"
+        );
+
 
     const day =
         String(
             date.getDate()
-        ).padStart(2, "0");
+        ).padStart(
+            2,
+            "0"
+        );
+
 
     return `${year}-${month}-${day}`;
+
 }
 
 
@@ -525,7 +779,9 @@ function dateToString(date) {
 ========================================= */
 
 document
-    .getElementById("addReview")
+    .getElementById(
+        "addReview"
+    )
     .addEventListener(
         "click",
         () => {
@@ -535,16 +791,26 @@ document
                     "Enter a Review subject:"
                 );
 
-            if (subject === null) {
+
+            if (
+                subject === null
+            ) {
+
                 return;
+
             }
+
 
             const trimmed =
                 subject.trim();
 
+
             if (!trimmed) {
+
                 return;
+
             }
+
 
             if (
                 data.reviewSubjects
@@ -556,15 +822,20 @@ document
                 );
 
                 return;
+
             }
+
 
             data.reviewSubjects.push(
                 trimmed
             );
 
+
             saveData();
 
+
             render();
+
         }
     );
 
@@ -573,73 +844,103 @@ document
    DELETE REVIEW SUBJECT
 ========================================= */
 
-function deleteReviewSubject(index) {
+function deleteReviewSubject(
+    index
+) {
 
     const subject =
-        data.reviewSubjects[index];
+        data.reviewSubjects[
+            index
+        ];
+
 
     const confirmed =
         confirm(
             `Delete "${subject}" from Review?`
         );
 
+
     if (!confirmed) {
+
         return;
+
     }
+
 
     data.reviewSubjects.splice(
         index,
         1
     );
 
+
     /*
      * Remove this subject's check
      * from every stored day.
-     * The indexes of the remaining
-     * subjects are rebuilt.
      */
 
     Object.keys(
         data.records
-    ).forEach(date => {
+    ).forEach(
+        date => {
 
-        const oldReview =
+            const oldReview =
+                data.records[date]
+                    .review || {};
+
+
+            const newReview =
+                {};
+
+
+            data.reviewSubjects.forEach(
+                (
+                    _,
+                    newIndex
+                ) => {
+
+                    let oldIndex =
+                        newIndex;
+
+
+                    if (
+                        newIndex >= index
+                    ) {
+
+                        oldIndex =
+                            newIndex + 1;
+
+                    }
+
+
+                    if (
+                        oldReview[
+                            oldIndex
+                        ]
+                    ) {
+
+                        newReview[
+                            newIndex
+                        ] = true;
+
+                    }
+
+                }
+            );
+
+
             data.records[date]
-                .review || {};
+                .review =
+                newReview;
 
-        const newReview = {};
+        }
+    );
 
-        data.reviewSubjects.forEach(
-            (_, newIndex) => {
-
-                let oldIndex =
-                    newIndex;
-
-                if (
-                    newIndex >= index
-                ) {
-
-                    oldIndex =
-                        newIndex + 1;
-                }
-
-                if (
-                    oldReview[oldIndex]
-                ) {
-
-                    newReview[newIndex] =
-                        true;
-                }
-            }
-        );
-
-        data.records[date].review =
-            newReview;
-    });
 
     saveData();
 
+
     render();
+
 }
 
 
