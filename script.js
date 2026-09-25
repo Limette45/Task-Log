@@ -257,7 +257,8 @@ function formatDate(
 /* =========================================
    HISTORY DATE RANGE
 
-   Current date ± 5 days
+   Today + previous 9 days
+   = 10 days total
 ========================================= */
 
 function getHistoryDates() {
@@ -265,26 +266,34 @@ function getHistoryDates() {
     const dates = [];
 
 
-    const centerDate =
+    /*
+     * Use the actual current date,
+     * not currentDate.
+     *
+     * This means History always shows
+     * the real today and the 9 days before it.
+     */
+
+    const today =
         dateToObject(
-            currentDate
+            getTodayString()
         );
 
 
     for (
-        let i = -5;
-        i <= 5;
+        let i = 0;
+        i < 10;
         i++
     ) {
 
         const date =
             new Date(
-                centerDate
+                today
             );
 
 
         date.setDate(
-            date.getDate() + i
+            date.getDate() - i
         );
 
 
