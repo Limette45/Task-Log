@@ -122,3 +122,18 @@ input[type="checkbox"]:disabled {
 .read-only {
     opacity: 0.75;
 }
+
+/* =========================
+   Board
+========================= */
+
+#board {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    resize: vertical;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+}
