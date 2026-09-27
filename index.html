@@ -2,29 +2,93 @@
 <html lang="en">
 
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Study Tracker</title>
-
 <link rel="stylesheet" href="style.css">
 
-
 <style>
-
-/* =========================
-   History Page
-========================= */
-
 #historyPage {
     display: none;
 }
 
+#mainPage {
+    transition: 0.2s;
+}
+
+.date-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.date-navigation > button {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: white;
+    padding: 9px 15px;
+    cursor: pointer;
+    font-size: 15px;
+    min-width: 48px;
+}
+
+.date-navigation > button:hover:not(:disabled) {
+    background: #eee;
+}
+
+.date-navigation > button:disabled {
+    opacity: 0.45;
+    cursor: default;
+}
+
+.date-display-wrapper {
+    min-width: 180px;
+    text-align: center;
+    padding: 10px 18px;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    background: white;
+    transition: 0.2s;
+}
+
+.date-display-wrapper.today {
+    border-color: #222;
+    background: #222;
+    color: white;
+}
+
+#dateDisplay {
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 1.2;
+}
+
+.today-badge {
+    display: none;
+    margin-top: 5px;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+}
+
+.date-display-wrapper.today .today-badge {
+    display: block;
+}
+
+#todayButton {
+    min-width: 62px;
+    font-weight: bold;
+}
+
+#mainPage.today-page .section {
+    border-color: #ddd;
+}
+
+#mainPage.today-page .date-navigation {
+    margin-bottom: 28px;
+}
 
 .history-section {
     background: white;
@@ -35,23 +99,16 @@
     overflow-x: auto;
 }
 
-
 .history-section h2 {
     margin: 0 0 15px;
     font-size: 20px;
 }
-
-
-/* =========================
-   History Table
-========================= */
 
 .history-table {
     width: 100%;
     border-collapse: collapse;
     min-width: 500px;
 }
-
 
 .history-table th,
 .history-table td {
@@ -61,28 +118,20 @@
     white-space: nowrap;
 }
 
-
 .history-table th {
     background: #f5f7fa;
     font-weight: bold;
 }
-
 
 .history-table th:first-child,
 .history-table td:first-child {
     text-align: left;
 }
 
-
 .history-empty {
     color: #777;
     padding: 5px 0;
 }
-
-
-/* =========================
-   History Buttons
-========================= */
 
 #openHistory,
 #backToMain {
@@ -94,16 +143,10 @@
     font-size: 14px;
 }
 
-
 #openHistory:hover,
 #backToMain:hover {
     background: #eee;
 }
-
-
-/* =========================
-   Comment
-========================= */
 
 #dailyComment {
     width: 100%;
@@ -114,19 +157,14 @@
     font-family: Arial, sans-serif;
     font-size: 16px;
     line-height: 1.5;
+    box-sizing: border-box;
 }
-
 
 #dailyComment:disabled {
     background: #f5f5f5;
     color: #555;
     cursor: default;
 }
-
-
-/* =========================
-   Comment History
-========================= */
 
 .comment-history-item {
     border: 1px solid #ddd;
@@ -136,64 +174,64 @@
     background: #fafafa;
 }
 
-
 .comment-history-date {
     font-weight: bold;
     margin-bottom: 7px;
 }
-
 
 .comment-history-text {
     white-space: pre-wrap;
     line-height: 1.5;
 }
 
-
 .comment-history-empty {
     color: #777;
 }
 
+@media (max-width: 600px) {
+    .date-navigation {
+        gap: 7px;
+    }
+
+    .date-navigation > button {
+        padding: 9px 10px;
+        min-width: 42px;
+    }
+
+    .date-display-wrapper {
+        min-width: 145px;
+        padding: 9px 12px;
+    }
+
+    #dateDisplay {
+        font-size: 17px;
+    }
+
+    #todayButton {
+        min-width: 58px;
+        font-size: 13px;
+    }
+}
 </style>
-
 </head>
-
 
 <body>
 
 <div class="app">
 
-
-    <!-- =================================================
-         MAIN PAGE
-    ================================================== -->
-
     <div id="mainPage">
 
-
-        <!-- =========================
-             Date Navigation
-        ========================== -->
-
         <div class="date-navigation">
+            <button id="prevDay">←</button>
 
-            <button id="prevDay">
-                ←
-            </button>
+            <div id="dateDisplayWrapper" class="date-display-wrapper">
+                <div id="dateDisplay"></div>
+                <div class="today-badge">TODAY</div>
+            </div>
 
-
-            <div id="dateDisplay"></div>
-
-
-            <button id="nextDay">
-                →
-            </button>
-
+            <button id="nextDay">→</button>
+            <button id="todayButton">Today</button>
         </div>
-
-
-        <!-- =========================
-             Board
-        ========================== -->
 
         <section class="section">
 
@@ -209,11 +247,6 @@
 
         </section>
 
-
-        <!-- =========================
-             Comment
-        ========================== -->
-
         <section class="section">
 
             <h2>
@@ -227,11 +260,6 @@
             ></textarea>
 
         </section>
-
-
-        <!-- =========================
-             Review
-        ========================== -->
 
         <section class="section">
 
@@ -247,15 +275,9 @@
 
             </div>
 
-
             <div id="reviewList"></div>
 
         </section>
-
-
-        <!-- =========================
-             History Button
-        ========================== -->
 
         <section class="section">
 
@@ -265,21 +287,9 @@
 
         </section>
 
-
     </div>
 
-
-
-    <!-- =================================================
-         HISTORY PAGE
-    ================================================== -->
-
     <div id="historyPage">
-
-
-        <!-- =========================
-             History Header
-        ========================== -->
 
         <div class="date-navigation">
 
@@ -292,17 +302,11 @@
                 History
             </div>
 
-
             <button id="backToMain">
                 Back
             </button>
 
         </div>
-
-
-        <!-- =========================
-             Review History
-        ========================== -->
 
         <section class="history-section">
 
@@ -314,11 +318,6 @@
 
         </section>
 
-
-        <!-- =========================
-             Comment History
-        ========================== -->
-
         <section class="history-section">
 
             <h2>
@@ -329,42 +328,19 @@
 
         </section>
 
-
     </div>
-
 
 </div>
 
-
-<!-- =================================================
-     Existing script.js
-================================================== -->
-
 <script src="script.js"></script>
 
-
-<!-- =================================================
-     Comment + History
-================================================== -->
-
 <script>
-
 (function () {
 
-
-    const STORAGE_KEY =
-        "studyRecordData";
-
-
-    /* =================================================
-       COMMENT
-    ================================================= */
+    const STORAGE_KEY = "studyRecordData";
 
     const commentBox =
-        document.getElementById(
-            "dailyComment"
-        );
-
+        document.getElementById("dailyComment");
 
     function loadComment() {
 
@@ -372,131 +348,38 @@
             return;
         }
 
-
-        const saved =
-            localStorage.getItem(
-                STORAGE_KEY
-            );
-
-
-        let data;
-
-        try {
-
-            data =
-                saved
-                    ? JSON.parse(saved)
-                    : {
-                        records: {},
-                        reviewSubjects: []
-                    };
-
-        } catch (error) {
-
-            data = {
-                records: {},
-                reviewSubjects: []
-            };
-
-        }
-
-
         const record =
             data.records[currentDate];
-
 
         if (
             record &&
             typeof record.comment === "string"
         ) {
-
             commentBox.value =
                 record.comment;
-
         } else {
-
             commentBox.value = "";
-
         }
 
-
-        /*
-         * All dates are editable.
-         */
         commentBox.disabled = false;
-
     }
-
 
     commentBox.addEventListener(
         "input",
         function () {
 
-            const saved =
-                localStorage.getItem(
-                    STORAGE_KEY
-                );
+            const record =
+                getRecord(currentDate);
 
-
-            let data;
-
-            try {
-
-                data =
-                    saved
-                        ? JSON.parse(saved)
-                        : {
-                            records: {},
-                            reviewSubjects: []
-                        };
-
-            } catch (error) {
-
-                data = {
-                    records: {},
-                    reviewSubjects: []
-                };
-
-            }
-
-
-            if (!data.records) {
-                data.records = {};
-            }
-
-
-            if (!data.records[currentDate]) {
-
-                data.records[currentDate] = {
-                    vocab: {},
-                    lang: {},
-                    review: {}
-                };
-
-            }
-
-
-            data.records[currentDate].comment =
+            record.comment =
                 commentBox.value;
 
-
-            localStorage.setItem(
-                STORAGE_KEY,
-                JSON.stringify(data)
-            );
-
+            saveData();
         }
     );
 
-
-    /*
-     * Detect date changes made by
-     * script.js.
-     */
-
     let lastCommentDate =
         currentDate;
-
 
     setInterval(
         function () {
@@ -509,57 +392,36 @@
                 lastCommentDate =
                     currentDate;
 
-
                 loadComment();
-
             }
 
-            /*
-             * All dates are editable.
-             */
             commentBox.disabled = false;
 
         },
         100
     );
 
-
     loadComment();
-
-
-
-    /* =================================================
-       HISTORY
-    ================================================= */
 
     const mainPage =
         document.getElementById(
             "mainPage"
         );
 
-
     const historyPage =
         document.getElementById(
             "historyPage"
         );
-
 
     const openHistory =
         document.getElementById(
             "openHistory"
         );
 
-
     const backToMain =
         document.getElementById(
             "backToMain"
         );
-
-
-
-    /* =================================================
-       LOAD DATA
-    ================================================= */
 
     function loadHistoryData() {
 
@@ -570,7 +432,6 @@
                     STORAGE_KEY
                 );
 
-
             if (!saved) {
 
                 return {
@@ -580,21 +441,16 @@
 
             }
 
-
             const parsed =
                 JSON.parse(saved);
 
-
             return {
-
                 records:
                     parsed.records || {},
 
                 reviewSubjects:
                     parsed.reviewSubjects || []
-
             };
-
 
         } catch (error) {
 
@@ -603,35 +459,16 @@
                 error
             );
 
-
             return {
                 records: {},
                 reviewSubjects: []
             };
-
         }
-
     }
-
-
-
-    /* =================================================
-       HISTORY DATES
-
-       script.js provides getHistoryDates()
-    ================================================= */
 
     function getDates(historyData) {
-
         return getHistoryDates();
-
     }
-
-
-
-    /* =================================================
-       FORMAT DATE
-    ================================================= */
 
     function formatHistoryDate(
         dateString
@@ -640,20 +477,12 @@
         const parts =
             dateString.split("-");
 
-
         return (
             parts[1] +
             "/" +
             parts[2]
         );
-
     }
-
-
-
-    /* =================================================
-       CREATE HISTORY TABLE
-    ================================================= */
 
     function createHistoryTable(
         dates,
@@ -666,37 +495,30 @@
                 "table"
             );
 
-
         table.className =
             "history-table";
-
 
         const thead =
             document.createElement(
                 "thead"
             );
 
-
         const headerRow =
             document.createElement(
                 "tr"
             );
-
 
         const dateHeader =
             document.createElement(
                 "th"
             );
 
-
         dateHeader.textContent =
             "Date";
-
 
         headerRow.appendChild(
             dateHeader
         );
-
 
         items.forEach(
             function (item) {
@@ -706,35 +528,27 @@
                         "th"
                     );
 
-
                 th.textContent =
                     item;
-
 
                 headerRow.appendChild(
                     th
                 );
-
             }
         );
-
 
         thead.appendChild(
             headerRow
         );
 
-
         table.appendChild(
             thead
         );
-
-
 
         const tbody =
             document.createElement(
                 "tbody"
             );
-
 
         dates.forEach(
             function (date) {
@@ -742,30 +556,24 @@
                 const record =
                     historyData.records[date];
 
-
                 const row =
                     document.createElement(
                         "tr"
                     );
-
 
                 const dateCell =
                     document.createElement(
                         "td"
                     );
 
-
                 dateCell.textContent =
                     formatHistoryDate(
                         date
                     );
 
-
                 row.appendChild(
                     dateCell
                 );
-
-
 
                 items.forEach(
                     function (
@@ -778,7 +586,6 @@
                                 "td"
                             );
 
-
                         const checked =
                             Boolean(
                                 record &&
@@ -786,43 +593,29 @@
                                 record.review[index]
                             );
 
-
                         cell.textContent =
                             checked
-                                ? "✓"
+                                ? "✅"
                                 : "—";
-
 
                         row.appendChild(
                             cell
                         );
-
                     }
                 );
-
 
                 tbody.appendChild(
                     row
                 );
-
             }
         );
-
 
         table.appendChild(
             tbody
         );
 
-
         return table;
-
     }
-
-
-
-    /* =================================================
-       REVIEW HISTORY
-    ================================================== */
 
     function renderReviewHistory(
         historyData
@@ -833,13 +626,10 @@
                 "reviewHistory"
             );
 
-
         container.innerHTML = "";
-
 
         const subjects =
             historyData.reviewSubjects;
-
 
         if (
             subjects.length === 0
@@ -850,28 +640,21 @@
                     "div"
                 );
 
-
             empty.className =
                 "history-empty";
 
-
             empty.textContent =
                 "No Review subjects yet.";
-
 
             container.appendChild(
                 empty
             );
 
-
             return;
-
         }
-
 
         const dates =
             getDates(historyData);
-
 
         const table =
             createHistoryTable(
@@ -880,18 +663,10 @@
                 historyData
             );
 
-
         container.appendChild(
             table
         );
-
     }
-
-
-
-    /* =================================================
-       COMMENT HISTORY
-    ================================================== */
 
     function renderCommentHistory(
         historyData
@@ -902,17 +677,13 @@
                 "commentHistory"
             );
 
-
         container.innerHTML = "";
-
 
         const dates =
             getDates(historyData);
 
-
         let hasComments =
             false;
-
 
         dates.forEach(
             function (date) {
@@ -920,79 +691,62 @@
                 const record =
                     historyData.records[date];
 
-
                 if (
                     !record ||
                     typeof record.comment !== "string" ||
                     record.comment.trim() === ""
                 ) {
-
                     return;
-
                 }
-
 
                 hasComments =
                     true;
-
 
                 const item =
                     document.createElement(
                         "div"
                     );
 
-
                 item.className =
                     "comment-history-item";
-
 
                 const dateElement =
                     document.createElement(
                         "div"
                     );
 
-
                 dateElement.className =
                     "comment-history-date";
-
 
                 dateElement.textContent =
                     formatHistoryDate(
                         date
                     );
 
-
                 const text =
                     document.createElement(
                         "div"
                     );
 
-
                 text.className =
                     "comment-history-text";
 
-
                 text.textContent =
                     record.comment;
-
 
                 item.appendChild(
                     dateElement
                 );
 
-
                 item.appendChild(
                     text
                 );
 
-
                 container.appendChild(
                     item
                 );
-
             }
         );
-
 
         if (!hasComments) {
 
@@ -1001,51 +755,31 @@
                     "div"
                 );
 
-
             empty.className =
                 "comment-history-empty";
-
 
             empty.textContent =
                 "No comments yet.";
 
-
             container.appendChild(
                 empty
             );
-
         }
-
     }
-
-
-
-    /* =================================================
-       RENDER HISTORY
-    ================================================== */
 
     function renderHistory() {
 
         const historyData =
             loadHistoryData();
 
-
         renderReviewHistory(
             historyData
         );
 
-
         renderCommentHistory(
             historyData
         );
-
     }
-
-
-
-    /* =================================================
-       OPEN HISTORY
-    ================================================= */
 
     openHistory.addEventListener(
         "click",
@@ -1053,28 +787,18 @@
 
             renderHistory();
 
-
             mainPage.style.display =
                 "none";
 
-
             historyPage.style.display =
                 "block";
-
 
             window.scrollTo(
                 0,
                 0
             );
-
         }
     );
-
-
-
-    /* =================================================
-       BACK TO MAIN
-    ================================================= */
 
     backToMain.addEventListener(
         "click",
@@ -1083,27 +807,17 @@
             historyPage.style.display =
                 "none";
 
-
             mainPage.style.display =
                 "block";
 
-
             loadComment();
-
 
             window.scrollTo(
                 0,
                 0
             );
-
         }
     );
-
-
-
-    /* =================================================
-       STORAGE UPDATE
-    ================================================= */
 
     window.addEventListener(
         "storage",
@@ -1116,27 +830,18 @@
 
                 loadComment();
 
-
                 if (
                     historyPage.style.display !==
                     "none"
                 ) {
-
                     renderHistory();
-
                 }
-
             }
-
         }
     );
 
-
 })();
-
 </script>
 
-
 </body>
-
 </html>
