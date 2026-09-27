@@ -54,6 +54,7 @@ function loadData() {
         };
 
     } catch (error) {
+
         console.error(
             "Failed to load data:",
             error
@@ -74,7 +75,10 @@ function saveData() {
     );
 }
 
-function dateToObject(dateString) {
+function dateToObject(
+    dateString
+) {
+
     const [
         year,
         month,
@@ -105,6 +109,7 @@ function compareDates(
     dateA,
     dateB
 ) {
+
     const a =
         dateToObject(dateA);
 
@@ -130,7 +135,9 @@ function isToday() {
 }
 
 function getRecord(date) {
+
     if (!data.records[date]) {
+
         data.records[date] = {
             vocab: {},
             lang: {},
@@ -156,6 +163,7 @@ function getRecord(date) {
 function formatDate(
     dateString
 ) {
+
     const date =
         dateToObject(
             dateString
@@ -180,6 +188,7 @@ function formatDate(
 function dateToString(
     date
 ) {
+
     const year =
         date.getFullYear();
 
@@ -203,6 +212,7 @@ function dateToString(
 }
 
 function getHistoryDates() {
+
     const dates = [];
 
     const today =
@@ -215,6 +225,7 @@ function getHistoryDates() {
         i < 10;
         i++
     ) {
+
         const date =
             new Date(
                 today
@@ -233,12 +244,58 @@ function getHistoryDates() {
 }
 
 function render() {
-    document.getElementById(
-        "dateDisplay"
-    ).textContent =
+
+    const dateDisplay =
+        document.getElementById(
+            "dateDisplay"
+        );
+
+    const dateDisplayWrapper =
+        document.getElementById(
+            "dateDisplayWrapper"
+        );
+
+    const todayButton =
+        document.getElementById(
+            "todayButton"
+        );
+
+    const mainPage =
+        document.getElementById(
+            "mainPage"
+        );
+
+    dateDisplay.textContent =
         formatDate(
             currentDate
         );
+
+    if (isToday()) {
+
+        dateDisplayWrapper.classList.add(
+            "today"
+        );
+
+        mainPage.classList.add(
+            "today-page"
+        );
+
+        todayButton.disabled =
+            true;
+
+    } else {
+
+        dateDisplayWrapper.classList.remove(
+            "today"
+        );
+
+        mainPage.classList.remove(
+            "today-page"
+        );
+
+        todayButton.disabled =
+            false;
+    }
 
     const record =
         getRecord(
@@ -265,8 +322,10 @@ function renderFixedChecks(
     elements,
     record
 ) {
+
     elements.forEach(
         input => {
+
             const category =
                 input.dataset.category;
 
@@ -288,13 +347,13 @@ function renderFixedChecks(
 function renderReview(
     record
 ) {
+
     const container =
         document.getElementById(
             "reviewList"
         );
 
-    container.innerHTML =
-        "";
+    container.innerHTML = "";
 
     data.reviewSubjects.forEach(
         (
@@ -375,6 +434,7 @@ function renderReview(
             deleteButton.addEventListener(
                 "click",
                 () => {
+
                     deleteReviewSubject(
                         index
                     );
@@ -398,12 +458,6 @@ function renderReview(
 
 function updateEditability() {
 
-    /*
-     * All dates are editable.
-     * Previously this used isToday(),
-     * which made past/future dates read-only.
-     */
-
     const editable = true;
 
     document
@@ -412,6 +466,7 @@ function updateEditability() {
         )
         .forEach(
             input => {
+
                 input.disabled =
                     !editable;
             }
@@ -431,6 +486,7 @@ function updateEditability() {
         )
         .forEach(
             button => {
+
                 button.disabled =
                     false;
             }
@@ -442,6 +498,7 @@ function updateEditability() {
         )
         .forEach(
             section => {
+
                 section.classList.remove(
                     "read-only"
                 );
@@ -538,6 +595,21 @@ document
 
 document
     .getElementById(
+        "todayButton"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            currentDate =
+                getTodayString();
+
+            render();
+        }
+    );
+
+document
+    .getElementById(
         "addReview"
     )
     .addEventListener(
@@ -587,6 +659,7 @@ document
 function deleteReviewSubject(
     index
 ) {
+
     const subject =
         data.reviewSubjects[
             index
@@ -630,6 +703,7 @@ function deleteReviewSubject(
                     if (
                         newIndex >= index
                     ) {
+
                         oldIndex =
                             newIndex + 1;
                     }
@@ -639,6 +713,7 @@ function deleteReviewSubject(
                             oldIndex
                         ]
                     ) {
+
                         newReview[
                             newIndex
                         ] = true;
