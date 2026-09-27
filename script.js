@@ -335,15 +335,6 @@ function renderReview(
                 "change",
                 () => {
 
-                    if (!isToday()) {
-                        checkbox.checked =
-                            Boolean(
-                                record.review[index]
-                            );
-
-                        return;
-                    }
-
                     record.review[index] =
                         checkbox.checked;
 
@@ -406,8 +397,14 @@ function renderReview(
 }
 
 function updateEditability() {
-    const editable =
-        isToday();
+
+    /*
+     * All dates are editable.
+     * Previously this used isToday(),
+     * which made past/future dates read-only.
+     */
+
+    const editable = true;
 
     document
         .querySelectorAll(
@@ -445,16 +442,9 @@ function updateEditability() {
         )
         .forEach(
             section => {
-
-                if (editable) {
-                    section.classList.remove(
-                        "read-only"
-                    );
-                } else {
-                    section.classList.add(
-                        "read-only"
-                    );
-                }
+                section.classList.remove(
+                    "read-only"
+                );
             }
         );
 }
@@ -469,11 +459,6 @@ document
             input.addEventListener(
                 "change",
                 () => {
-
-                    if (!isToday()) {
-                        render();
-                        return;
-                    }
 
                     const record =
                         getRecord(
