@@ -190,23 +190,25 @@
 
         </div>
 
+
         <!-- =========================
-     Board
-========================= -->
+             Board
+        ========================== -->
 
-    <section class="section">
+        <section class="section">
 
-        <h2>
-            Board
-        </h2>
+            <h2>
+                Board
+            </h2>
 
-        <textarea
-            id="board"
-            placeholder="Write something here..."
-            rows="5"
-        ></textarea>
+            <textarea
+                id="board"
+                placeholder="Write something here..."
+                rows="5"
+            ></textarea>
 
-    </section>
+        </section>
+
 
         <!-- =========================
              Comment
@@ -218,7 +220,6 @@
                 Comment
             </h2>
 
-
             <textarea
                 id="dailyComment"
                 placeholder="Write a comment for today..."
@@ -226,7 +227,6 @@
             ></textarea>
 
         </section>
-
 
 
         <!-- =========================
@@ -241,7 +241,6 @@
                     Review
                 </h2>
 
-
                 <button id="addReview">
                     ＋ Add
                 </button>
@@ -252,7 +251,6 @@
             <div id="reviewList"></div>
 
         </section>
-
 
 
         <!-- =========================
@@ -302,7 +300,6 @@
         </div>
 
 
-
         <!-- =========================
              Review History
         ========================== -->
@@ -313,11 +310,9 @@
                 Review History
             </h2>
 
-
             <div id="reviewHistory"></div>
 
         </section>
-
 
 
         <!-- =========================
@@ -329,7 +324,6 @@
             <h2>
                 Comment History
             </h2>
-
 
             <div id="commentHistory"></div>
 
@@ -379,6 +373,34 @@
         }
 
 
+        const saved =
+            localStorage.getItem(
+                STORAGE_KEY
+            );
+
+
+        let data;
+
+        try {
+
+            data =
+                saved
+                    ? JSON.parse(saved)
+                    : {
+                        records: {},
+                        reviewSubjects: []
+                    };
+
+        } catch (error) {
+
+            data = {
+                records: {},
+                reviewSubjects: []
+            };
+
+        }
+
+
         const record =
             data.records[currentDate];
 
@@ -398,38 +420,73 @@
         }
 
 
-        commentBox.disabled =
-            !isToday();
+        /*
+         * All dates are editable.
+         */
+        commentBox.disabled = false;
 
     }
-
 
 
     commentBox.addEventListener(
         "input",
         function () {
 
-            if (!isToday()) {
+            const saved =
+                localStorage.getItem(
+                    STORAGE_KEY
+                );
 
-                loadComment();
 
-                return;
+            let data;
+
+            try {
+
+                data =
+                    saved
+                        ? JSON.parse(saved)
+                        : {
+                            records: {},
+                            reviewSubjects: []
+                        };
+
+            } catch (error) {
+
+                data = {
+                    records: {},
+                    reviewSubjects: []
+                };
+
             }
 
 
-            const record =
-                getRecord(currentDate);
+            if (!data.records) {
+                data.records = {};
+            }
 
 
-            record.comment =
+            if (!data.records[currentDate]) {
+
+                data.records[currentDate] = {
+                    vocab: {},
+                    lang: {},
+                    review: {}
+                };
+
+            }
+
+
+            data.records[currentDate].comment =
                 commentBox.value;
 
 
-            saveData();
+            localStorage.setItem(
+                STORAGE_KEY,
+                JSON.stringify(data)
+            );
 
         }
     );
-
 
 
     /*
@@ -457,9 +514,10 @@
 
             }
 
-
-            commentBox.disabled =
-                !isToday();
+            /*
+             * All dates are editable.
+             */
+            commentBox.disabled = false;
 
         },
         100
@@ -731,7 +789,7 @@
 
                         cell.textContent =
                             checked
-                                ? "✅"
+                                ? "✓"
                                 : "—";
 
 
@@ -856,7 +914,6 @@
             false;
 
 
-
         dates.forEach(
             function (date) {
 
@@ -935,7 +992,6 @@
 
             }
         );
-
 
 
         if (!hasComments) {
