@@ -19,6 +19,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 12px;
     margin-bottom: 25px;
 }
 
@@ -27,17 +28,44 @@ body {
     font-weight: bold;
 }
 
-.date-navigation button {
+.date-navigation > button {
     width: 45px;
     height: 40px;
+    padding: 0;
     border: 1px solid #ccc;
     border-radius: 8px;
     background: white;
+    font-family: Arial, sans-serif;
     font-size: 20px;
     cursor: pointer;
+    flex-shrink: 0;
 }
 
-.date-navigation button:hover {
+.date-navigation > button:hover {
+    background: #eee;
+}
+
+#openHistory,
+#backToMain {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    height: auto;
+    min-width: 0;
+    padding: 8px 14px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    background: white;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+#openHistory:hover,
+#backToMain:hover {
     background: #eee;
 }
 
@@ -88,6 +116,7 @@ input[type="checkbox"]:disabled {
     border-radius: 7px;
     background: white;
     padding: 6px 10px;
+    font-family: Arial, sans-serif;
     cursor: pointer;
 }
 
@@ -133,4 +162,18 @@ input[type="checkbox"]:disabled {
     font-family: Arial, sans-serif;
     font-size: 16px;
     line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 20px 12px;
+    }
+
+    .date-navigation {
+        gap: 7px;
+    }
+
+    .section {
+        padding: 15px;
+    }
 }
